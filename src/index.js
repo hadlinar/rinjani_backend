@@ -29,5 +29,7 @@ app.get('/visit_cat', visit.getVisitCat)
 app.get('/role', role.getRole) 
 app.get('/realization', visit.getRealization)
 app.get('/visit', visit.getVisit) 
+app.post('/add_realization', visit.postRealization) 
+app.post('/add_visit', visit.postVisit) 
 
 app.listen(port, () => console.log(`backend on port ${port}!`))

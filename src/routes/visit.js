@@ -16,6 +16,7 @@ const getVisitCat = (request, response) => {
             "message": "ok",
             "result": results.rows
         })
+        console.log(results);
     })
 }
 
@@ -43,11 +44,46 @@ const getRealization = (request, response) => {
     })
 }
 
+const postVisit = (request, response) => {
+    const { 
+        visit_cat,
+        branch_id,
+        cust_id,
+        time_start,
+        time_finish,
+        user_id,
+        description,
+        pic_position,
+        pic_name,
+        status_visit } = request.body
+
+    pool.query('INSERT INTO public.trn_visit (visit_no, visit_cat, branch_id, cust_id, time_start, time_finish, user_id, description, pic_position, pic_name, status_visit) VALUES (null, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)', [
+            visit_cat,
+            branch_id,
+            cust_id,
+            time_start,
+            time_finish,
+            user_id,
+            description,
+            pic_position,
+            pic_name,
+            status_visit
+        ], (error, results) => {
+            if(error) {
+                throw error
+            }
+            response.status(201).json({
+                "message": "ok",
+            })
+        })
+}
+
 const postRealization = (request, response) => {
     const { 
-        branch_id, 
-        cust_id, 
-        time_start, 
+        visit_no,
+        branch_id,
+        cust_id,
+        time_start,
         time_finish,
         user_id,
         description,
@@ -56,19 +92,35 @@ const postRealization = (request, response) => {
         status_visit,
         latitude,
         longitude } = request.body
-  
-    pool.query('INSERT INTO users (name, email) VALUES ($1, $2)', [name, email], (error, results) => {
-      if (error) {
-        throw error
-      }
-      response.status(201).send(`User added with ID: ${result.insertId}`)
+
+    pool.query('INSERT INTO public.trn_real_visit(real_no, visit_no, branch_id, cust_id, time_start, time_finish, user_id, description, pic_position, pic_name, status_visit, latitude, longitude) VALUES (null, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)', [
+        visit_no,
+        branch_id,
+        cust_id,
+        time_start,
+        time_finish,
+        user_id,
+        description,
+        pic_position,
+        pic_name,
+        status_visit,
+        latitude,
+        longitude
+    ], (error, results) => {
+        if(error) {
+            throw error
+        }
+        response.status(201).json({
+            "message": "ok",
+        })
     })
-  }
+}
 
 
 module.exports = {
     getVisitCat,
     getRealization,
     getVisit,
-    
+    postRealization,
+    postVisit
 }
