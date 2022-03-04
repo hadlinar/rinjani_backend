@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "pg": "^8.7.3",
+    "sequelize": "^6.17.0"
+  },
+  "name": "rinjani_backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "description": "rinjani-backend",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hadlinar/rinjani_backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hadlinar/rinjani_backend/issues"
+  },
+  "homepage": "https://github.com/hadlinar/rinjani_backend#readme"
+}
