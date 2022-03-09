@@ -21,7 +21,7 @@ router.get('/visit/category', async (req,res) => {
 });
 
 router.get(`/visit/:userId`, async (req,res) => {
-    let userId = req.params.userId
+    let userId = req.query.userId
     let visit = await new Visit().getVisitById(userId)
     return res.status(200).json({
         "message": "ok",
