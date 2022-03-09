@@ -1,35 +1,43 @@
 const express = require("express");
-const bodyParser = require('body-parser')
+const cors = require("cors");
 const app = express();
-const port = 3000;
-const user = require('./routes/user.js')
-const branch = require('./routes/branch.js')
-const customer = require('./routes/customer.js')
-const employee = require('./routes/employee.js')
-const visit = require('./routes/visit.js')
-const role = require('./routes/role.js')
 
-app.use(bodyParser.json())
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-)
+const visitRoute = require('./routes/visit');
+const userRoute = require('./routes/user');
+const loginRoute = require('./routes/login');
+const roleRoute = require('./routes/role');
+const employeeRoute = require('./routes/employee');
+const customerRoute = require('./routes/customer');
+const branchRoute = require('./routes/branch');
 
-app.get('/', (req, res) => {
-    res.json({ test: 'test backend' })
+app.use(express.json());
+app.use(cors());
+app.use(express.urlencoded({
+    extended:true
+}));
+app.set('strict routing', false );
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header(
+        "Access-Control-Allow-Methods",
+        "GET, POST, OPTION, PUT, PATCH, DELETE, HEAD"
+    )
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+})
+
+app.use(visitRoute);
+app.use(userRoute);
+app.use(roleRoute);
+app.use(employeeRoute); 
+app.use(customerRoute);
+app.use(branchRoute);
+
+const PORT = process.env.PORT  || 4000;
+
+app.listen(PORT, () => {
+    console.log(`app started on port ${PORT}`)
 });
-
-app.get('/users', user.getUsers) 
-app.get('/branch', branch.getBranch) 
-app.get('/customer', customer.getCustomer) 
-app.get('/customer_cat', customer.getCustomerCat) 
-app.get('/employee', employee.getEmployee) 
-app.get('/visit_cat', visit.getVisitCat) 
-app.get('/role', role.getRole) 
-app.get('/realization', visit.getRealization)
-app.get('/visit', visit.getVisit) 
-app.post('/add_realization', visit.postRealization) 
-app.post('/add_visit', visit.postVisit) 
-
-app.listen(port, () => console.log(`backend on port ${port}!`))

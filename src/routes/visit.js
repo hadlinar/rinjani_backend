@@ -1,126 +1,73 @@
-const Pool = require('pg').Pool
-const pool = new Pool({
-  user: 'postgres',
-  host: '170.1.70.57',
-  database: 'krakatau',
-  password: 'nusindopub2021**',
-  port: 5432,
-})
+const express = require("express");
+const router = express.Router();
+const Visit = require('../controllers/Visit');
 
-const getVisitCat = (request, response) => {
-    pool.query('SELECT * FROM public.mst_visit_cat ORDER BY visit_id ASC', (error, results) => {
-        if (error) {
-        throw error
-        }
-        response.status(200).json({
-            "message": "ok",
-            "result": results.rows
-        })
-        console.log(results);
+router.get('/visits', async (req,res) => {
+    console.log("masuk atas")
+    const Visit = require('../controllers/Visit');
+    let visits = await new Visit().getAllVisit();
+    return res.status(200).json({
+        "message": "ok",
+        "result": visits
     })
-}
+});
 
-const getVisit = (request, response) => {
-    pool.query('SELECT * FROM public.trn_visit ORDER BY visit_no ASC ', (error, results) => {
-        if (error) {
-        throw error
-        }
-        response.status(200).json({
-            "message": "ok",
-            "result": results.rows
-        })
+router.get('/visit/category', async (req,res) => {
+    let visits = await new Visit().getVisitCat()
+    return res.status(200).json({
+        "message": "ok",
+        "result": visits
     })
-}
+});
 
-const getRealization = (request, response) => {
-    pool.query('SELECT * FROM public.trn_real_visit ORDER BY real_no ASC', (error, results) => {
-        if (error) {
-        throw error
-        }
-        response.status(200).json({
-            "message": "ok",
-            "result": results.rows
-        })
+router.get(`/visit/:userId`, async (req,res) => {
+    let userId = req.params.userId
+    let visit = await new Visit().getVisitById(userId)
+    return res.status(200).json({
+        "message": "ok",
+        "result": visit
     })
-}
+});
 
-const postVisit = (request, response) => {
-    const { 
-        visit_cat,
-        branch_id,
-        cust_id,
-        time_start,
-        time_finish,
-        user_id,
-        description,
-        pic_position,
-        pic_name,
-        status_visit } = request.body
+//Create a todo.
+// router.post('/todo', async (req,res) => {
 
-    pool.query('INSERT INTO public.trn_visit (visit_no, visit_cat, branch_id, cust_id, time_start, time_finish, user_id, description, pic_position, pic_name, status_visit) VALUES (null, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)', [
-            visit_cat,
-            branch_id,
-            cust_id,
-            time_start,
-            time_finish,
-            user_id,
-            description,
-            pic_position,
-            pic_name,
-            status_visit
-        ], (error, results) => {
-            if(error) {
-                throw error
-            }
-            response.status(201).json({
-                "message": "ok",
-            })
-        })
-}
+//     let {title} = req.body;
 
-const postRealization = (request, response) => {
-    const { 
-        visit_no,
-        branch_id,
-        cust_id,
-        time_start,
-        time_finish,
-        user_id,
-        description,
-        pic_position,
-        pic_name,
-        status_visit,
-        latitude,
-        longitude } = request.body
+//     await new Todo().createTodo({title},res);
 
-    pool.query('INSERT INTO public.trn_real_visit(real_no, visit_no, branch_id, cust_id, time_start, time_finish, user_id, description, pic_position, pic_name, status_visit, latitude, longitude) VALUES (null, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)', [
-        visit_no,
-        branch_id,
-        cust_id,
-        time_start,
-        time_finish,
-        user_id,
-        description,
-        pic_position,
-        pic_name,
-        status_visit,
-        latitude,
-        longitude
-    ], (error, results) => {
-        if(error) {
-            throw error
-        }
-        response.status(201).json({
-            "message": "ok",
-        })
-    })
-}
+//     return res.redirect('/')
 
+// });
 
-module.exports = {
-    getVisitCat,
-    getRealization,
-    getVisit,
-    postRealization,
-    postVisit
-}
+// //Update a todo.
+// router.put('/todos/:todoId', async (req,res) => {
+
+//     let {todoId} = req.params;
+
+//     await new Todo().updateTodo(todoId,res);
+
+//     let todos = await new Todo().getTodos();
+
+//     return res.render('home',{
+//         todos
+//     });
+
+// });
+
+// //Delete a todo.
+// router.delete('/todos/:todoId', async (req,res) => {
+
+//     let {todoId} = req.params;
+
+//     await new Todo().deleteTodo(todoId);
+
+//     let todos = await new Todo().getTodos();
+
+//     return res.render('home',{
+//         todos
+//     });
+    
+// });
+
+module.exports = router;
