@@ -35,6 +35,7 @@ app.use(roleRoute);
 app.use(employeeRoute); 
 app.use(customerRoute);
 app.use(branchRoute);
+app.use(loginRoute);
 
 const PORT = process.env.PORT  || 4000;
 

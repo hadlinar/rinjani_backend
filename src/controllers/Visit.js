@@ -8,20 +8,46 @@ class Visit {
     };
 
     async getVisitById(userId){
-        let result = await db.query(`SELECT (
-             visit_no, 
-             visit_cat, 
-             branch_id, 
-             cust_id, 
-             time_start, 
-             time_finish, 
-             description, 
-             pic_position, 
-             pic_name, 
-             status_visit) 
-         FROM public.trn_visit 
-         WHERE user_id=$1
-         ORDER BY visit_no ASC`, [userId])
+        let result = await db.query(`SELECT 
+        public.trn_visit.visit_no, 
+        public.trn_visit.visit_cat, 
+        public.trn_visit.branch_id, 
+        public.mst_customer.cust_name, 
+        public.trn_visit.time_start, 
+        public.trn_visit.time_finish, 
+        public.trn_visit.user_id, 
+        public.trn_visit.description, 
+        public.trn_visit.pic_position, 
+        public.trn_visit.pic_name, 
+        public.trn_visit.status_visit
+        FROM public.trn_visit
+        LEFT JOIN public.mst_customer
+        ON public.trn_visit.cust_id=public.mst_customer.cust_id
+        WHERE user_id=$1;`, [userId])
+        .catch(console.log);
+
+        return result.rows;        
+    };
+
+    async getRealizationById(userId){
+        let result = await db.query(`SELECT 
+        r.real_no, 
+        r.visit_no, 
+        r.branch_id, 
+        cust.cust_name, 
+        r.time_start, 
+        r.time_finish, 
+        r.user_id, 
+        r.description, 
+        r.pic_position, 
+        r.pic_name, 
+        r.status_visit, 
+        r.latitude, 
+        r.longitude
+        FROM public.trn_real_visit as r
+        LEFT JOIN public.mst_customer as cust
+        ON r.cust_id=cust.cust_id
+        WHERE user_id=$1;`, [userId])
         .catch(console.log);
 
         return result.rows;        
@@ -32,14 +58,80 @@ class Visit {
         return results.rows;
     };
 
-    //create a todo.
-    // async createTodo(todo){
+    async addVisit(visitCat, branchId, custId, timeStart, timeFinish, userId, description, picPosition, picName, statisVisit){
+        await db.query(`INSERT INTO public.trn_visit(
+            visit_no, 
+            visit_cat, 
+            branch_id, 
+            cust_id, 
+            time_start, 
+            time_finish, 
+            user_id, 
+            description, 
+            pic_position, 
+            pic_name, 
+            status_visit)
+            VALUES ('', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,[
+                visitCat, 
+                branchId,
+                custId,
+                timeStart,
+                timeFinish,
+                userId,
+                description,
+                picPosition,
+                picName,
+                statisVisit
+            ])
+        .catch(console.log);
 
-    //     await db.query('INSERT INTO todos (title, checked) VALUES ($1, $2)',[todo.title,false])
-    //     .catch(console.log);
+        return;        
+    };
 
-    //     return;        
-    // };
+    async addRealization(
+        visitNo, 
+        branchId, 
+        custId, 
+        timeStart, 
+        timeFinish, 
+        userId, 
+        description, 
+        picPosition, 
+        picName, 
+        statusVisit,
+        lat,
+        lng){
+        await db.query(`INSERT INTO public.trn_real_visit(
+            real_no, 
+            visit_no, 
+            branch_id, 
+            cust_id, 
+            time_start, 
+            time_finish, 
+            user_id, 
+            description, 
+            pic_position, 
+            pic_name, 
+            status_visit, 
+            latitude, 
+            longitude)
+            VALUES ('', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);`,[
+                visitNo, 
+                branchId, 
+                custId, 
+                timeStart, 
+                timeFinish, 
+                userId, 
+                description, 
+                picPosition, 
+                picName, 
+                statusVisit,
+                lat,
+                lng])
+        .catch(console.log);
+
+        return;        
+    };
 
     // //update a todo.
     // async updateTodo(todoId){
@@ -69,3 +161,4 @@ class Visit {
 };
 
 module.exports = Visit;
+
