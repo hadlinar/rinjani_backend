@@ -10,7 +10,7 @@ class Visit {
     async getVisitById(userId){
         let result = await db.query(`SELECT 
         public.trn_visit.visit_no, 
-        public.trn_visit.visit_cat, 
+        public.trn_visit.visit_id, 
         public.trn_visit.branch_id, 
         public.mst_customer.cust_name, 
         public.trn_visit.time_start, 
@@ -23,7 +23,7 @@ class Visit {
         FROM public.trn_visit
         LEFT JOIN public.mst_customer
         ON public.trn_visit.cust_id=public.mst_customer.cust_id
-        WHERE user_id=$1;`, [userId])
+        WHERE public.trn_visit.visit_no='02' AND user_id=$1;`, [userId])
         .catch(console.log);
 
         return result.rows;        
@@ -58,10 +58,10 @@ class Visit {
         return results.rows;
     };
 
-    async addVisit(visitCat, branchId, custId, timeStart, timeFinish, userId, description, picPosition, picName, statisVisit){
+    async addVisit(visitId, branchId, custId, timeStart, timeFinish, userId, description, picPosition, picName, statusVisit){
         await db.query(`INSERT INTO public.trn_visit(
             visit_no, 
-            visit_cat, 
+            visit_id, 
             branch_id, 
             cust_id, 
             time_start, 
@@ -72,7 +72,7 @@ class Visit {
             pic_name, 
             status_visit)
             VALUES ('', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,[
-                visitCat, 
+                visitId, 
                 branchId,
                 custId,
                 timeStart,
@@ -81,7 +81,7 @@ class Visit {
                 description,
                 picPosition,
                 picName,
-                statisVisit
+                statusVisit
             ])
         .catch(console.log);
 

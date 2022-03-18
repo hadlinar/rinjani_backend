@@ -33,7 +33,7 @@ router.post('/visit/:userId', async (req,res) => {
     let userId = req.params.userId
 
     await new Visit().addVisit(
-        body.visit_cat,
+        body.visit_id,
         body.branch_id,
         body.cust_id,
         body.time_start,
@@ -86,45 +86,5 @@ router.get(`/realization/:userId`, async (req,res) => {
     })
 });
 
-//Create a todo.
-// router.post('/todo', async (req,res) => {
-
-//     let {title} = req.body;
-
-//     await new Todo().createTodo({title},res);
-
-//     return res.redirect('/')
-
-// });
-
-// //Update a todo.
-// router.put('/todos/:todoId', async (req,res) => {
-
-//     let {todoId} = req.params;
-
-//     await new Todo().updateTodo(todoId,res);
-
-//     let todos = await new Todo().getTodos();
-
-//     return res.render('home',{
-//         todos
-//     });
-
-// });
-
-// //Delete a todo.
-// router.delete('/todos/:todoId', async (req,res) => {
-
-//     let {todoId} = req.params;
-
-//     await new Todo().deleteTodo(todoId);
-
-//     let todos = await new Todo().getTodos();
-
-//     return res.render('home',{
-//         todos
-//     });
-    
-// });
 
 module.exports = router;

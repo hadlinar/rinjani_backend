@@ -8,4 +8,12 @@ const pool = new Pool({
   port: 5432,
 })
 
+// const pool = new Pool({
+//   user: 'postgre',
+//   host: 'localhost',
+//   database: 'postgres',
+//   password: 'postgres',
+//   port: 5432,
+// })
+
 module.exports = pool;

@@ -1,14 +1,16 @@
 const express = require("express");
+require("dotenv").config();
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const db = require('../config/db');
 const  jwt  =  require("jsonwebtoken");
-const Login = require('../controllers/Login');
 
 router.post('/login', async (req, res) => {
     const { nik, password } = req.body;
     try {
-        const data = await db.query(`SELECT * FROM public.mst_user WHERE nik= $1;`, [nik]) //Verifying if the user exists in the database
+        const data = await db.query(`SELECT u.user_id, e.name, u.nik, u.branch_id, u.password, u.email, u.role_id, u.flg_used
+        FROM public.mst_user as u, public.mst_employee as e
+        WHERE u.nik = e.nik AND u.user_id=$1;`, [nik])
         const user = data.rows;
         if (user.length === 0) {
             res.status(400).json({
@@ -16,21 +18,22 @@ router.post('/login', async (req, res) => {
             });
         }
         else {
-            bcrypt.compare(password, user[0].password, (err, result) => { //Comparing the hashed password
+            bcrypt.compare(password, user[0].password, (err, result) => { 
                 if (err) {
                     res.status(500).json({
                         error: "Server error",
                     });
-                } else if (result === true) { //Checking if credentials match
-                    // const token = jwt.sign(
-                    // {nik: nik},process.env.SECRET_KEY);
+                } else if (result === true) { 
+                    const token = jwt.sign({
+                        nik: nik,
+                    }, process.env.SECRET_KEY);
                     res.status(200).json({
-                        message: "User signed in!",
-                        // token: token,
+                        message: "ok",
+                        token: token,
+                        result: data.rows[0]
                     });
                 }
                 else {
-                    //Declaring the errors
                     if (result != true)
                     res.status(400).json({
                         error: "Enter correct password!",
@@ -71,9 +74,7 @@ router.post('/register', async (req, res) => {
                     role_id, 
                     flg_used
                 };
-                var  flag  =  1; //Declaring a flag
-                
-                //Inserting data into the database
+                var  flag  =  1; 
                 
                 db.query(`INSERT INTO public.mst_user(
                     user_id, nik, branch_id, password, email, role_id, flg_used) VALUES ($1,$2,$3,$4,$5,$6,$7);`, 
@@ -90,44 +91,21 @@ router.post('/register', async (req, res) => {
                             res.status(200).send({ message: 'success' });
                         }
                 })
-                // if (flag) {
-                //     const  token  = jwt.sign( //Signing a jwt token
-                //         {nik: user.nik},process.env.SECRET_KEY
-                //     );
-                // };
+                if (flag) {
+                    const  token  = jwt.sign( //Signing a jwt token
+                        {nik: user.nik},process.env.SECRET_KEY
+                    );
+                };
             });
         }
     }
     catch (err) {
         console.log(err);
         res.status(500).json({
-            error: "Database error while registring user!", //Database connection error
+            error: "Database error while registring user", //Database connection error
         });
     };
     });
-    
-
-    // const body = req.body;
-
-    // if (!(body.email && body.password)) {
-    //   return res.status(400).send({ error: "Data not formatted properly" });
-    // }
-    // // generate salt to hash password
-    // const salt = await bcrypt.genSalt(10);
-    // // // now we set user password to hashed password
-    // body.password = await bcrypt.hash(body.password, salt);
-
-    // // creating a new mongoose doc from user data
-    // const user = await new Login().createUser(
-    //     body.user_id,
-    //     body.nik,
-    //     body.branch_id,
-    //     body.password,
-    //     body.email,
-    //     body.role_id,
-    //     body.flg_used
-    // );
-    // user.save().then((doc) => res.status(201).send(doc));
 
 
 module.exports = router;
