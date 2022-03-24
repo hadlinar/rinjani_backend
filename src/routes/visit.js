@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Visit = require('../controllers/Visit');
+const  jwt  =  require("jsonwebtoken");
 
 router.get('/visits', async (req,res) => {
     const Visit = require('../controllers/Visit');
@@ -19,66 +20,88 @@ router.get('/visit/category', async (req,res) => {
     })
 });
 
-router.get(`/visit/:userId`, async (req,res) => {
-    let userId = req.params.userId
-    let visit = await new Visit().getVisitById(userId)
-    return res.status(200).json({
-        "message": "ok",
-        "result": visit
-    })
+router.get('/visit', verifyToken, (req, res)=>{  
+    jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
+        if (err) {
+            res.status(403).json({
+                message: "Session time out",
+            });
+        } else{  
+            let userId = authData.nik
+            let visit = new Visit().getVisitById(userId)
+            visit.then(function(result) {
+                res.status(200).json({
+                    "message": "ok",
+                    "result": result
+                })
+            })
+        }  
+    });  
 });
 
-router.post('/visit/:userId', async (req,res) => {
+router.post('/visit', verifyToken, (req,res) => {
     let body = req.body
-    let userId = req.params.userId
 
-    await new Visit().addVisit(
-        body.visit_id,
-        body.branch_id,
-        body.cust_id,
-        body.time_start,
-        body.time_finish,
-        userId,
-        body.description,
-        body.pic_position,
-        body.pic_name,
-        body.status_visit
-    );
-
-    return res.status(200).json({
-        "message": "posted",
-    })
+    jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
+        if (err) {
+            res.status(403).json({
+                message: "Session time out",
+            });
+        } else {  
+            let userId = authData.nik
+            new Visit().addVisit(
+                body.visit_id,
+                body.branch_id,
+                body.cust_id,
+                body.time_start,
+                body.time_finish,
+                userId,
+                body.description,
+                body.pic_position,
+                body.pic_name,
+                body.status_visit
+            );
+            res.status(200).json({
+                "message": "posted"
+            })
+        }  
+    }); 
 
 });
 
-
-router.post('/realization/:userId', async (req,res) => {
+router.post('/realization', verifyToken, (req,res) => {
     let body = req.body
-    let userId = req.params.userId
 
-    await new Visit().addRealization(
-        body.visit_no,
-        body.branch_id,
-        body.cust_id,
-        body.time_start,
-        body.time_finish,
-        userId,
-        body.description,
-        body.pic_position,
-        body.pic_name,
-        body.status_visit,
-        body.latitude,
-        body.longitude
-    );
-
-    return res.status(200).json({
-        "message": "posted",
-    })
+    jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
+        if (err) {
+            res.status(403).json({
+                message: "Session time out",
+            });
+        } else {  
+            let userId = authData.nik
+            new Visit().addRealization(
+                body.visit_no,
+                body.branch_id,
+                body.cust_id,
+                body.time_start,
+                body.time_finish,
+                userId,
+                body.description,
+                body.pic_position,
+                body.pic_name,
+                body.status_visit,
+                body.latitude,
+                body.longitude
+            );
+            res.status(200).json({
+                "message": "posted"
+            })
+        }  
+    }); 
 
 });
 
-router.get(`/realization/:userId/:filter`, async (req,res) => {
-    let userId = req.params.userId
+router.get(`/realization/:filter`, verifyToken, (req,res) => {
     let filter = req.params.filter
     let filtered
     if(filter == 'week') {
@@ -90,11 +113,25 @@ router.get(`/realization/:userId/:filter`, async (req,res) => {
     } else {
         filtered = '1 year'
     }
-    let realization = await new Visit().getRealizationById(userId, filtered)
-    return res.status(200).json({
-        "message": "ok",
-        "result": realization
-    })
+
+    jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
+        if (err) {
+            res.status(403).json({
+                message: "Session time out",
+            });
+        } else{  
+            let userId = authData.nik
+            let realization = new Visit().getRealizationById(userId, filtered)
+            realization.then(function(result) {
+                res.status(200).json({
+                    "message": "ok",
+                    "result": result
+                })
+            })
+        }  
+    });
+
+
 });
 
 router.get(`/realization_operasional/:branchId/:filter`, async (req,res) => {
@@ -116,5 +153,18 @@ router.get(`/realization_operasional/:branchId/:filter`, async (req,res) => {
         "result": realization
     })
 });
+
+function verifyToken(req, res, next) { 
+    const bearerHearder = req.headers['authorization'];
+    if(typeof bearerHearder != 'undefined'){
+        const bearer = bearerHearder.split(' ');
+        const bearerToken = bearer[1];
+        req.token = bearerToken;
+        next();  
+  
+    } else {  
+        res.sendStatus(403);  
+    }  
+} 
 
 module.exports = router;

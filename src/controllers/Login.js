@@ -3,23 +3,13 @@ const bcrypt = require('bcryptjs');
 var salt = bcrypt.genSaltSync(10);
 
 class Login {
-    // async getRole(){
-    //     let results = await db.query(`SELECT * FROM public.mst_role ORDER BY role_id ASC`).catch(console.log);
-    //     return results.rows;
-    // };
     
-    async authenticate({ nik, password }) {
-        // get account from database
-        const account = await db.Account.findOne({ nik });
-    
-        // check account found and verify password
-        if (!account || !bcrypt.compareSync(password, account.passwordHash)) {
-            // authentication failed
-            return false;
-        } else {
-            // authentication successful
-            return true;
-        }
+    async login(nik) {
+        let result = await db.query(`SELECT u.user_id, e.name, u.nik, u.branch_id, u.password, u.email, u.role_id, u.flg_used
+        FROM public.mst_user as u, public.mst_employee as e
+        WHERE u.nik = e.nik AND u.user_id=$1;`, [nik])
+
+        return result;
     }
 
     async createUser([user_id, nik, branch_id, password, email, role_id, flg_used]){
