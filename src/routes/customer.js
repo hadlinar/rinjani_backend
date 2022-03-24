@@ -3,7 +3,7 @@ const router = express.Router();
 const Customer = require('../controllers/customer');
 
 router.get('/customer/:branchId', async (req,res) => {
-    let branchId = req.params.branchI
+    let branchId = req.params.branchId
     let customer = await new Customer().getCustomer(branchId);
     return res.status(200).json({
         "message": "customer",

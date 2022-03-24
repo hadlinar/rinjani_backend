@@ -14,7 +14,7 @@ router.post('/login', async (req, res) => {
         const user = data.rows;
         if (user.length === 0) {
             res.status(400).json({
-                error: "User is not registered, Sign Up first",
+                error: "User is not registered",
             });
         }
         else {

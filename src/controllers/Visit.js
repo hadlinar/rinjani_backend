@@ -9,45 +9,50 @@ class Visit {
 
     async getVisitById(userId){
         let result = await db.query(`SELECT 
-        public.trn_visit.visit_no, 
-        public.trn_visit.visit_id, 
-        public.trn_visit.branch_id, 
-        public.mst_customer.cust_name, 
-        public.trn_visit.time_start, 
-        public.trn_visit.time_finish, 
-        public.trn_visit.user_id, 
-        public.trn_visit.description, 
-        public.trn_visit.pic_position, 
-        public.trn_visit.pic_name, 
-        public.trn_visit.status_visit
-        FROM public.trn_visit
-        LEFT JOIN public.mst_customer
-        ON public.trn_visit.cust_id=public.mst_customer.cust_id
-        WHERE public.trn_visit.visit_no='02' AND user_id=$1;`, [userId])
+        v.visit_no, 
+        v.visit_id, 
+       	v.branch_id, 
+        cu.cust_name, 
+        v.cust_id, 
+        v.time_start, 
+        v.time_finish, 
+        v.user_id, 
+        v.description, 
+        v.pic_position, 
+        v.pic_name, 
+        v.status_visit
+        FROM public.trn_visit as v
+        LEFT JOIN public.mst_customer as cu
+        ON v.cust_id=cu.cust_id AND v.branch_id=cu.branch_id
+        WHERE v.visit_id='02' AND v.user_id=$1 AND v.status_visit='n'
+        ORDER BY v.visit_no ASC;`, [userId])
         .catch(console.log);
 
         return result.rows;        
     };
 
-    async getRealizationById(userId){
-        let result = await db.query(`SELECT 
-        r.real_no, 
-        r.visit_no, 
-        r.branch_id, 
-        cust.cust_name, 
-        r.time_start, 
-        r.time_finish, 
-        r.user_id, 
-        r.description, 
-        r.pic_position, 
-        r.pic_name, 
-        r.status_visit, 
-        r.latitude, 
-        r.longitude
-        FROM public.trn_real_visit as r
-        LEFT JOIN public.mst_customer as cust
-        ON r.cust_id=cust.cust_id
-        WHERE user_id=$1;`, [userId])
+    async getRealizationById(userId, filtered){
+        let result = await db.query(
+            `select visit_no, real_no, branch_id, f_branch_name(branch_id) branch, cust_id, f_cust_name(branch_id, cust_id) customer, time_start, time_finish,
+            user_id, f_employee_name(user_id) employee, description, pic_position, pic_name, status_visit, latitude, longitude
+            from trn_real_visit
+            where time_finish > now() - $2::interval
+            and user_id = $1
+            order by real_no desc`,
+        [userId, filtered])
+        .catch(console.log);
+
+        return result.rows;        
+    };
+
+    async getRealizationOp(branchId, filtered){
+        let result = await db.query(
+            `select visit_no, real_no, branch_id, f_branch_name(branch_id) branch, cust_id, f_cust_name(branch_id, cust_id) customer, time_start, time_finish,
+            user_id, f_employee_name(user_id) employee, description, pic_position, pic_name, status_visit, latitude, longitude
+            from trn_real_visit
+            where time_finish > now() - $2::interval
+            and branch_id = case when branch_id = '0' then branch_id else $1 end
+            order by real_no, branch_id desc`, [branchId, filtered])
         .catch(console.log);
 
         return result.rows;        
@@ -71,7 +76,7 @@ class Visit {
             pic_position, 
             pic_name, 
             status_visit)
-            VALUES ('', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,[
+            VALUES ('', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,[ 
                 visitId, 
                 branchId,
                 custId,
@@ -101,21 +106,29 @@ class Visit {
         statusVisit,
         lat,
         lng){
-        await db.query(`INSERT INTO public.trn_real_visit(
-            real_no, 
-            visit_no, 
-            branch_id, 
-            cust_id, 
-            time_start, 
-            time_finish, 
-            user_id, 
-            description, 
-            pic_position, 
-            pic_name, 
-            status_visit, 
-            latitude, 
-            longitude)
-            VALUES ('', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);`,[
+        await db.query(`
+            WITH updated AS (
+                UPDATE public.trn_visit
+                    SET status_visit='y'
+                WHERE public.trn_visit.visit_no = $1
+                returning *
+            )
+            INSERT INTO public.trn_real_visit(
+                real_no, 
+                visit_no, 
+                branch_id, 
+                cust_id, 
+                time_start, 
+                time_finish, 
+                user_id, 
+                description, 
+                pic_position, 
+                pic_name, 
+                status_visit, 
+                latitude, 
+                longitude)
+            VALUES ('', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);          
+        `,[
                 visitNo, 
                 branchId, 
                 custId, 
@@ -132,31 +145,6 @@ class Visit {
 
         return;        
     };
-
-    // //update a todo.
-    // async updateTodo(todoId){
-
-    //     //get the previous todo.
-    //     let original_todo = await db.query(
-    //         `SELECT * FROM todos WHERE id=$1`,[parseInt(todoId)]
-    //     ).catch(console.log);
-
-    //     //update
-    //     await db.query(`UPDATE todos SET checked=$1 WHERE id=$2`,[!original_todo.rows[0].checked,parseInt(todoId)])
-    //     .catch(console.log);
-
-    //     return;
-    // };
-
-    // //delete a todo.
-    // async deleteTodo(todoId){
-        
-    //     //delete todo
-    //     await db.query(`DELETE FROM todos WHERE id=$1`,[parseInt(todoId)])
-    //     .catch(console.log);
-
-    //     return;        
-    // };
 
 };
 

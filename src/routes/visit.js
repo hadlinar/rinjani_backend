@@ -77,14 +77,44 @@ router.post('/realization/:userId', async (req,res) => {
 
 });
 
-router.get(`/realization/:userId`, async (req,res) => {
+router.get(`/realization/:userId/:filter`, async (req,res) => {
     let userId = req.params.userId
-    let realization = await new Visit().getRealizationById(userId)
+    let filter = req.params.filter
+    let filtered
+    if(filter == 'week') {
+        filtered = '1 week'
+    } else if(filter == 'day') {
+        filtered = '1 day'
+    } else if(filter == 'month') {
+        filtered = '1 month'
+    } else {
+        filtered = '1 year'
+    }
+    let realization = await new Visit().getRealizationById(userId, filtered)
     return res.status(200).json({
         "message": "ok",
         "result": realization
     })
 });
 
+router.get(`/realization_operasional/:branchId/:filter`, async (req,res) => {
+    let branchId = req.params.branchId
+    let filter = req.params.filter
+    let filtered
+    if(filter == 'week') {
+        filtered = '1 week'
+    } else if(filter == 'day') {
+        filtered = '1 day'
+    } else if(filter == 'month') {
+        filtered = '1 month'
+    } else {
+        filtered = '1 year'
+    }
+    let realization = await new Visit().getRealizationOp(branchId, filtered)
+    return res.status(200).json({
+        "message": "ok",
+        "result": realization
+    })
+});
 
 module.exports = router;
