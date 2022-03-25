@@ -22,11 +22,7 @@ router.get('/visit/category', async (req,res) => {
 
 router.get('/visit', verifyToken, (req, res)=>{  
     jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
-        if (err) {
-            res.status(403).json({
-                message: "Session time out",
-            });
-        } else{  
+        try {
             let userId = authData.nik
             let visit = new Visit().getVisitById(userId)
             visit.then(function(result) {
@@ -35,7 +31,11 @@ router.get('/visit', verifyToken, (req, res)=>{
                     "result": result
                 })
             })
-        }  
+        } catch (e) {
+            res.status(403).json({
+                message: "Session time out",
+            });
+        }
     });  
 });
 
@@ -43,11 +43,7 @@ router.post('/visit', verifyToken, (req,res) => {
     let body = req.body
 
     jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
-        if (err) {
-            res.status(403).json({
-                message: "Session time out",
-            });
-        } else {  
+        try {
             let userId = authData.nik
             new Visit().addVisit(
                 body.visit_id,
@@ -64,7 +60,11 @@ router.post('/visit', verifyToken, (req,res) => {
             res.status(200).json({
                 "message": "posted"
             })
-        }  
+        } catch {
+            res.status(403).json({
+                message: "Session time out",
+            });
+        }
     }); 
 
 });
@@ -73,11 +73,7 @@ router.post('/realization', verifyToken, (req,res) => {
     let body = req.body
 
     jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
-        if (err) {
-            res.status(403).json({
-                message: "Session time out",
-            });
-        } else {  
+        try {
             let userId = authData.nik
             new Visit().addRealization(
                 body.visit_no,
@@ -96,7 +92,11 @@ router.post('/realization', verifyToken, (req,res) => {
             res.status(200).json({
                 "message": "posted"
             })
-        }  
+        } catch(e) {
+            res.status(403).json({
+                message: "Session time out",
+            });
+        }
     }); 
 
 });
@@ -115,11 +115,7 @@ router.get(`/realization/:filter`, verifyToken, (req,res) => {
     }
 
     jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
-        if (err) {
-            res.status(403).json({
-                message: "Session time out",
-            });
-        } else{  
+        try{
             let userId = authData.nik
             let realization = new Visit().getRealizationById(userId, filtered)
             realization.then(function(result) {
@@ -128,7 +124,11 @@ router.get(`/realization/:filter`, verifyToken, (req,res) => {
                     "result": result
                 })
             })
-        }  
+        } catch(e) {
+            res.status(403).json({
+                message: "Session time out",
+            });
+        }
     });
 
 

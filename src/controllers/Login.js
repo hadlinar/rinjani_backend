@@ -1,6 +1,4 @@
 const db = require('../config/db');
-const bcrypt = require('bcryptjs');
-var salt = bcrypt.genSaltSync(10);
 
 class Login {
     
