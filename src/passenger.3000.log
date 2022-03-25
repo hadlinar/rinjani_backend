@@ -1,0 +1,70 @@
+[ N 2022-03-25 10:13:49.1302 6587/T1 age/Wat/WatchdogMain.cpp:1373 ]: Starting Passenger watchdog...
+[ N 2022-03-25 10:13:49.2064 6589/T1 age/Cor/CoreMain.cpp:1340 ]: Starting Passenger core...
+[ N 2022-03-25 10:13:49.2069 6589/T1 age/Cor/CoreMain.cpp:256 ]: Passenger core running in multi-application mode.
+[ N 2022-03-25 10:13:49.2880 6589/T1 age/Cor/CoreMain.cpp:1015 ]: Passenger core online, PID 6589
+App 6619 output: node:internal/modules/cjs/loader:936
+App 6619 output:   throw err;
+App 6619 output:   ^
+App 6619 output: 
+App 6619 output: Error: Cannot find module '/Users/hadlina/Desktop/rinjani_backend/src/app.js'
+App 6619 output: Require stack:
+App 6619 output: - /usr/local/Cellar/passenger/6.0.12_2/libexec/src/helper-scripts/node-loader.js
+App 6619 output:     at Function.Module._resolveFilename (node:internal/modules/cjs/loader:933:15)
+App 6619 output:     at Function.Module._load (node:internal/modules/cjs/loader:778:27)
+App 6619 output:     at Module.require (node:internal/modules/cjs/loader:1005:19)
+App 6619 output:     at Module.require (/usr/local/Cellar/passenger/6.0.12_2/libexec/src/helper-scripts/node-loader.js:80:25)
+App 6619 output:     at require (node:internal/modules/cjs/helpers:102:18)
+App 6619 output:     at loadApplication (/usr/local/Cellar/passenger/6.0.12_2/libexec/src/helper-scripts/node-loader.js:243:2)
+App 6619 output:     at setupEnvironment (/usr/local/Cellar/passenger/6.0.12_2/libexec/src/helper-scripts/node-loader.js:214:2)
+App 6619 output:     at Object.<anonymous> (/usr/local/Cellar/passenger/6.0.12_2/libexec/src/helper-scripts/node-loader.js:133:1)
+App 6619 output:     at Module._compile (node:internal/modules/cjs/loader:1101:14)
+App 6619 output:     at Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10) {
+App 6619 output:   code: 'MODULE_NOT_FOUND',
+App 6619 output:   requireStack: [
+App 6619 output:     '/usr/local/Cellar/passenger/6.0.12_2/libexec/src/helper-scripts/node-loader.js'
+App 6619 output:   ]
+App 6619 output: }
+[ E 2022-03-25 10:13:52.6252 6589/Tj age/Cor/App/Implementation.cpp:221 ]: Could not spawn process for application /Users/hadlina/Desktop/rinjani_backend/src: The application process exited prematurely.
+  Error ID: 1839ef27
+  Error details saved to: /var/folders/gv/jtsrvd5s2nd2plccjwz0gcj80000gn/T//passenger-error-MVeale.html
+
+[ E 2022-03-25 10:13:52.6408 6589/T8 age/Cor/Con/CheckoutSession.cpp:283 ]: [Client 1-1] Cannot checkout session because a spawning error occurred. The identifier of the error is 1839ef27. Please see earlier logs for details about the error.
+[ N 2022-03-25 10:13:53.6743 6589/T5 age/Cor/SecurityUpdateChecker.h:519 ]: Security update check: no update found (next check in 24 hours)
+
+[ N 2022-03-25 10:13:55.1419 6589/T8 age/Cor/CoreMain.cpp:671 ]: Signal received. Gracefully shutting down... (send signal 2 more time(s) to force shutdown)
+[ N 2022-03-25 10:13:55.1421 6589/T1 age/Cor/CoreMain.cpp:1246 ]: Received command to shutdown gracefully. Waiting until all clients have disconnected...
+[ N 2022-03-25 10:13:55.1423 6589/T8 Ser/Server.h:901 ]: [ServerThr.1] Freed 0 spare client objects
+[ N 2022-03-25 10:13:55.1423 6589/T8 Ser/Server.h:558 ]: [ServerThr.1] Shutdown finished
+[ N 2022-03-25 10:13:55.1424 6589/Ta Ser/Server.h:901 ]: [ServerThr.2] Freed 0 spare client objects
+[ N 2022-03-25 10:13:55.1425 6589/Ta Ser/Server.h:558 ]: [ServerThr.2] Shutdown finished
+[ N 2022-03-25 10:13:55.1425 6589/Tc Ser/Server.h:901 ]: [ServerThr.3] Freed 0 spare client objects
+[ N 2022-03-25 10:13:55.1426 6589/Tc Ser/Server.h:558 ]: [ServerThr.3] Shutdown finished
+[ N 2022-03-25 10:13:55.1427 6589/Te Ser/Server.h:901 ]: [ServerThr.4] Freed 0 spare client objects
+[ N 2022-03-25 10:13:55.1427 6589/Te Ser/Server.h:558 ]: [ServerThr.4] Shutdown finished
+[ N 2022-03-25 10:13:55.1438 6589/Tg Ser/Server.h:901 ]: [ApiServer] Freed 0 spare client objects
+[ N 2022-03-25 10:13:55.1438 6589/Tg Ser/Server.h:558 ]: [ApiServer] Shutdown finished
+[ N 2022-03-25 10:13:56.6201 6589/T1 age/Cor/CoreMain.cpp:1325 ]: Passenger core shutdown finished
+[ N 2022-03-25 10:14:01.3167 6676/T1 age/Wat/WatchdogMain.cpp:1373 ]: Starting Passenger watchdog...
+[ N 2022-03-25 10:14:01.3774 6679/T1 age/Cor/CoreMain.cpp:1340 ]: Starting Passenger core...
+[ N 2022-03-25 10:14:01.3779 6679/T1 age/Cor/CoreMain.cpp:256 ]: Passenger core running in multi-application mode.
+[ N 2022-03-25 10:14:01.4049 6679/T1 age/Cor/CoreMain.cpp:1015 ]: Passenger core online, PID 6679
+[ N 2022-03-25 10:14:04.5893 6679/T5 age/Cor/SecurityUpdateChecker.h:519 ]: Security update check: no update found (next check in 24 hours)
+App 6707 output: (node:6707) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency
+App 6707 output: (Use `node --trace-warnings ...` to show where the warning was created)
+App 6707 output: app started on port 4000
+
+[ N 2022-03-25 10:17:46.0086 6679/T8 age/Cor/CoreMain.cpp:671 ]: Signal received. Gracefully shutting down... (send signal 2 more time(s) to force shutdown)
+[ N 2022-03-25 10:17:46.0143 6679/T1 age/Cor/CoreMain.cpp:1246 ]: Received command to shutdown gracefully. Waiting until all clients have disconnected...
+[ N 2022-03-25 10:17:46.0149 6679/T1 age/Cor/CoreMain.cpp:1147 ]: Checking whether to disconnect long-running connections for process 6707, application /Users/hadlina/Desktop/rinjani_backend/src (development)
+[ N 2022-03-25 10:17:46.0196 6679/Tc Ser/Server.h:901 ]: [ServerThr.3] Freed 0 spare client objects
+[ N 2022-03-25 10:17:46.0206 6679/Tc Ser/Server.h:558 ]: [ServerThr.3] Shutdown finished
+[ N 2022-03-25 10:17:46.0184 6679/T8 Ser/Server.h:901 ]: [ServerThr.1] Freed 0 spare client objects
+[ N 2022-03-25 10:17:46.0185 6679/Tf Ser/Server.h:901 ]: [ServerThr.4] Freed 0 spare client objects
+[ N 2022-03-25 10:17:46.0211 6679/Tf Ser/Server.h:558 ]: [ServerThr.4] Shutdown finished
+[ N 2022-03-25 10:17:46.0212 6679/T8 Ser/Server.h:558 ]: [ServerThr.1] Shutdown finished
+[ N 2022-03-25 10:17:46.0183 6679/Ta Ser/Server.h:901 ]: [ServerThr.2] Freed 0 spare client objects
+[ N 2022-03-25 10:17:46.0229 6679/Ta Ser/Server.h:558 ]: [ServerThr.2] Shutdown finished
+[ N 2022-03-25 10:17:46.0231 6679/Tg Ser/Server.h:901 ]: [ApiServer] Freed 0 spare client objects
+[ N 2022-03-25 10:17:46.0232 6679/Tg Ser/Server.h:558 ]: [ApiServer] Shutdown finished
+[ N 2022-03-25 10:17:46.0385 6679/T1 age/Cor/CoreMain.cpp:1147 ]: Checking whether to disconnect long-running connections for process 6707, application /Users/hadlina/Desktop/rinjani_backend/src (development)
+[ N 2022-03-25 10:17:48.0162 6679/T1 age/Cor/CoreMain.cpp:1325 ]: Passenger core shutdown finished
