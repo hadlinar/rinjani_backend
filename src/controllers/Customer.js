@@ -1,8 +1,10 @@
 const db = require('../config/db');
 
 class Customer {
-    async getCustomer(){
-        let results = await db.query(`SELECT * FROM public.mst_customer ORDER BY cust_id ASC, branch_id ASC`).catch(console.log);
+    async getCustomer(branchId){
+        let results = await db.query(`SELECT cust_id, branch_id, cust_name, category_id, address, city
+        FROM public.mst_customer
+        WHERE branch_id=$1;`, [branchId]).catch(console.log);
         return results.rows;
     };
 

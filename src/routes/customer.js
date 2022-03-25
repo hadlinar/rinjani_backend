@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 const Customer = require('../controllers/customer');
 
-router.get('/customer', async (req,res) => {
-    let customer = await new Customer().getCustomer();
+router.get('/customer/:branchId', async (req,res) => {
+    let branchId = req.params.branchId
+    let customer = await new Customer().getCustomer(branchId);
     return res.status(200).json({
-        "message": "ok",
+        "message": "customer",
         "result": customer
     })
 });

@@ -1,3 +1,4 @@
+const compression = require('compression')
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -10,6 +11,7 @@ const employeeRoute = require('./routes/employee');
 const customerRoute = require('./routes/customer');
 const branchRoute = require('./routes/branch');
 
+app.use(compression())
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({
@@ -35,6 +37,7 @@ app.use(roleRoute);
 app.use(employeeRoute); 
 app.use(customerRoute);
 app.use(branchRoute);
+app.use(loginRoute);
 
 const PORT = process.env.PORT  || 4000;
 
