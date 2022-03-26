@@ -49,6 +49,18 @@ router.post('/login', async (req, res) => {
     };
 });
 
+router.put('/logout', verifyToken, (req, res) => {
+    const authHeader = req.headers["authorization"];
+
+    jwt.sign(authHeader, "", { expiresIn: 1 } , (logout, err) => {
+        if (logout) {
+            res.send({msg : 'Logged out'});
+        } else {
+            res.send({msg:'Error'});
+        }
+    })
+})
+
 router.post('/register', async (req, res) => {
     const { user_id, nik, branch_id, password, email, role_id, flg_used } =  req.body;
     try {
@@ -105,7 +117,20 @@ router.post('/register', async (req, res) => {
             error: "Database error",
         });
     };
-    });
+});
+
+function verifyToken(req, res, next) { 
+    const bearerHearder = req.headers['authorization'];
+    if(typeof bearerHearder != 'undefined'){
+        const bearer = bearerHearder.split(' ');
+        const bearerToken = bearer[1];
+        req.token = bearerToken;
+        next();  
+  
+    } else {  
+        res.sendStatus(403);  
+    }  
+} 
 
 
 module.exports = router;

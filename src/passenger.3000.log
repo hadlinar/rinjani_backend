@@ -68,3 +68,23 @@ App 6707 output: app started on port 4000
 [ N 2022-03-25 10:17:46.0232 6679/Tg Ser/Server.h:558 ]: [ApiServer] Shutdown finished
 [ N 2022-03-25 10:17:46.0385 6679/T1 age/Cor/CoreMain.cpp:1147 ]: Checking whether to disconnect long-running connections for process 6707, application /Users/hadlina/Desktop/rinjani_backend/src (development)
 [ N 2022-03-25 10:17:48.0162 6679/T1 age/Cor/CoreMain.cpp:1325 ]: Passenger core shutdown finished
+[ N 2022-03-26 12:46:06.2149 888/T1 age/Wat/WatchdogMain.cpp:1373 ]: Starting Passenger watchdog...
+[ N 2022-03-26 12:46:06.2665 890/T1 age/Cor/CoreMain.cpp:1340 ]: Starting Passenger core...
+[ N 2022-03-26 12:46:06.2686 890/T1 age/Cor/CoreMain.cpp:256 ]: Passenger core running in multi-application mode.
+[ N 2022-03-26 12:46:06.3782 890/T1 age/Cor/CoreMain.cpp:1015 ]: Passenger core online, PID 890
+2022/03/26 12:46:08 [error] 893#0: *4 "/Users/hadlina/Desktop/rinjani_backend/src/public/index.html" is not found (2: No such file or directory), client: 127.0.0.1, server: _, request: "HEAD / HTTP/1.1", host: "0.0.0.0"
+[ N 2022-03-26 12:46:09.6221 890/T5 age/Cor/SecurityUpdateChecker.h:519 ]: Security update check: no update found (next check in 24 hours)
+
+[ N 2022-03-26 12:56:00.7082 890/T8 age/Cor/CoreMain.cpp:671 ]: Signal received. Gracefully shutting down... (send signal 2 more time(s) to force shutdown)
+[ N 2022-03-26 12:56:00.7137 890/T1 age/Cor/CoreMain.cpp:1246 ]: Received command to shutdown gracefully. Waiting until all clients have disconnected...
+[ N 2022-03-26 12:56:00.7191 890/Tb Ser/Server.h:901 ]: [ServerThr.2] Freed 0 spare client objects
+[ N 2022-03-26 12:56:00.7198 890/Tb Ser/Server.h:558 ]: [ServerThr.2] Shutdown finished
+[ N 2022-03-26 12:56:00.7192 890/T8 Ser/Server.h:901 ]: [ServerThr.1] Freed 0 spare client objects
+[ N 2022-03-26 12:56:00.7192 890/Tc Ser/Server.h:901 ]: [ServerThr.3] Freed 0 spare client objects
+[ N 2022-03-26 12:56:00.7192 890/Te Ser/Server.h:901 ]: [ServerThr.4] Freed 0 spare client objects
+[ N 2022-03-26 12:56:00.7199 890/T8 Ser/Server.h:558 ]: [ServerThr.1] Shutdown finished
+[ N 2022-03-26 12:56:00.7199 890/Tc Ser/Server.h:558 ]: [ServerThr.3] Shutdown finished
+[ N 2022-03-26 12:56:00.7200 890/Te Ser/Server.h:558 ]: [ServerThr.4] Shutdown finished
+[ N 2022-03-26 12:56:00.7198 890/Tg Ser/Server.h:901 ]: [ApiServer] Freed 0 spare client objects
+[ N 2022-03-26 12:56:00.7201 890/Tg Ser/Server.h:558 ]: [ApiServer] Shutdown finished
+[ N 2022-03-26 12:56:01.8160 890/T1 age/Cor/CoreMain.cpp:1325 ]: Passenger core shutdown finished
