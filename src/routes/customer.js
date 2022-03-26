@@ -11,10 +11,10 @@ router.get('/customer/:branchId', async (req,res) => {
     })
 });
 
-router.get('/customer/category', async (req,res) => {
+router.get('/customers/category', async (req,res) => {
     let customer = await new Customer().getCustomerCategory();
     return res.status(200).json({
-        "message": "ok",
+        "message": "yes",
         "result": customer
     })
 });

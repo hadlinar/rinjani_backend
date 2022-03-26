@@ -88,3 +88,27 @@ App 6707 output: app started on port 4000
 [ N 2022-03-26 12:56:00.7198 890/Tg Ser/Server.h:901 ]: [ApiServer] Freed 0 spare client objects
 [ N 2022-03-26 12:56:00.7201 890/Tg Ser/Server.h:558 ]: [ApiServer] Shutdown finished
 [ N 2022-03-26 12:56:01.8160 890/T1 age/Cor/CoreMain.cpp:1325 ]: Passenger core shutdown finished
+[ N 2022-03-26 14:24:33.1075 2366/T1 age/Wat/WatchdogMain.cpp:1373 ]: Starting Passenger watchdog...
+[ N 2022-03-26 14:24:33.1787 2368/T1 age/Cor/CoreMain.cpp:1340 ]: Starting Passenger core...
+[ N 2022-03-26 14:24:33.1808 2368/T1 age/Cor/CoreMain.cpp:256 ]: Passenger core running in multi-application mode.
+[ N 2022-03-26 14:24:33.2433 2368/T1 age/Cor/CoreMain.cpp:1015 ]: Passenger core online, PID 2368
+App 2396 output: (node:2396) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency
+App 2396 output: (Use `node --trace-warnings ...` to show where the warning was created)
+App 2396 output: Server running at http://170.1.70.67:4200/
+[ N 2022-03-26 14:24:37.4144 2368/T5 age/Cor/SecurityUpdateChecker.h:519 ]: Security update check: no update found (next check in 24 hours)
+
+[ N 2022-03-26 14:35:49.6030 2368/T8 age/Cor/CoreMain.cpp:671 ]: Signal received. Gracefully shutting down... (send signal 2 more time(s) to force shutdown)
+[ N 2022-03-26 14:35:49.6042 2368/T1 age/Cor/CoreMain.cpp:1246 ]: Received command to shutdown gracefully. Waiting until all clients have disconnected...
+[ N 2022-03-26 14:35:49.6043 2368/T1 age/Cor/CoreMain.cpp:1147 ]: Checking whether to disconnect long-running connections for process 2396, application /Users/hadlina/Desktop/rinjani_backend/src (development)
+[ N 2022-03-26 14:35:49.6060 2368/Tc Ser/Server.h:901 ]: [ServerThr.3] Freed 0 spare client objects
+[ N 2022-03-26 14:35:49.6061 2368/Tc Ser/Server.h:558 ]: [ServerThr.3] Shutdown finished
+[ N 2022-03-26 14:35:49.6063 2368/Te Ser/Server.h:901 ]: [ServerThr.4] Freed 0 spare client objects
+[ N 2022-03-26 14:35:49.6064 2368/Te Ser/Server.h:558 ]: [ServerThr.4] Shutdown finished
+[ N 2022-03-26 14:35:49.6064 2368/T8 Ser/Server.h:901 ]: [ServerThr.1] Freed 0 spare client objects
+[ N 2022-03-26 14:35:49.6065 2368/Ta Ser/Server.h:901 ]: [ServerThr.2] Freed 0 spare client objects
+[ N 2022-03-26 14:35:49.6067 2368/T8 Ser/Server.h:558 ]: [ServerThr.1] Shutdown finished
+[ N 2022-03-26 14:35:49.6076 2368/Ta Ser/Server.h:558 ]: [ServerThr.2] Shutdown finished
+[ N 2022-03-26 14:35:49.6081 2368/Tg Ser/Server.h:901 ]: [ApiServer] Freed 0 spare client objects
+[ N 2022-03-26 14:35:49.6085 2368/Tg Ser/Server.h:558 ]: [ApiServer] Shutdown finished
+[ N 2022-03-26 14:35:49.6110 2368/T1 age/Cor/CoreMain.cpp:1147 ]: Checking whether to disconnect long-running connections for process 2396, application /Users/hadlina/Desktop/rinjani_backend/src (development)
+[ N 2022-03-26 14:35:50.6871 2368/T1 age/Cor/CoreMain.cpp:1325 ]: Passenger core shutdown finished
