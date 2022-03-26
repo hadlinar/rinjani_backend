@@ -6,7 +6,7 @@ router.get('/customer/:branchId', async (req,res) => {
     let branchId = req.params.branchId
     let customer = await new Customer().getCustomer(branchId);
     return res.status(200).json({
-        "message": "customer",
+        "message": "ok",
         "result": customer
     })
 });
@@ -14,7 +14,7 @@ router.get('/customer/:branchId', async (req,res) => {
 router.get('/customers/category', async (req,res) => {
     let customer = await new Customer().getCustomerCategory();
     return res.status(200).json({
-        "message": "yes",
+        "message": "ok",
         "result": customer
     })
 });
