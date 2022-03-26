@@ -40,11 +40,8 @@ app.use(branchRoute);
 app.use(loginRoute);
 
 const http = require('http')
-// const hostname = '170.1.70.67'  
-// const port = 4200; 
-
-const hostname = '0.0.0.0'  
-const port = 3000; 
+const hostname = '170.1.70.67'  
+const port = 4200; 
 
 http.createServer(app).listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`)
