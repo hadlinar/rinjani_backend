@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Customer = require('../controllers/customer');
+const Customer = require('../controllers/Customer');
 
 router.get('/customer/:branchId', async (req,res) => {
     let branchId = req.params.branchId
