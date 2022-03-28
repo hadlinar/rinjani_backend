@@ -12,23 +12,21 @@ router.get('/users', async (req,res) => {
     })
 });
 
-router.post('/user', verifyToken, (req, res)=>{  
-    jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
-        if (err) {
-            res.status(403).json({
-                message: "Session time out",
-            });
-        } else{  
-            let userId = authData.nik
-            let user = new User().getUser(userId);
-            user.then(function(result) {
-                res.status(200).json({
-                    "message": "ok",
-                    "result": result.rows[0]
-                })
+router.post('/user', verifyToken, (req, res) => {   
+    jwt.verify(req.token, process.env.SECRET_KEY, (err, decoded) => {
+        if (err) return res.status(500).json({ 
+            message: 'Failed to authenticate token.' 
+        });
+
+        let userId = decoded.nik
+        let user = new User().getUser(userId);
+        user.then(function(result) {
+            res.status(200).json({
+                "message": "ok",
+                "result": result.rows[0]
             })
-        }  
-    });  
+        })
+      });
 });
 
 function verifyToken(req, res, next) { 

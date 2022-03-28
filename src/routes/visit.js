@@ -32,6 +32,10 @@ router.get('/visit', verifyToken, (req, res)=>{
                 })
             })
         } catch (e) {
+            res.status(500).json({
+                 message: 'Failed to authenticate token.'
+            });
+
             res.status(403).json({
                 message: "Session time out",
             });
@@ -61,6 +65,10 @@ router.post('/visit', verifyToken, (req,res) => {
                 "message": "posted"
             })
         } catch {
+            res.status(500).json({
+                 message: 'Failed to authenticate token.'
+            });
+
             res.status(403).json({
                 message: "Session time out",
             });
@@ -93,6 +101,10 @@ router.post('/realization', verifyToken, (req,res) => {
                 "message": "posted"
             })
         } catch(e) {
+            res.status(500).json({
+                 message: 'Failed to authenticate token.'
+            });
+
             res.status(403).json({
                 message: "Session time out",
             });
@@ -125,6 +137,11 @@ router.get(`/realization/:filter`, verifyToken, (req,res) => {
                 })
             })
         } catch(e) {
+
+            res.status(500).json({
+                message: 'Failed to authenticate token.'
+           });
+           
             res.status(403).json({
                 message: "Session time out",
             });

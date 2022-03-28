@@ -26,7 +26,7 @@ router.post('/login', async (req, res) => {
                 } else if (result === true) { 
                     const token = jwt.sign({
                         nik: nik,
-                    }, process.env.SECRET_KEY);
+                    }, process.env.SECRET_KEY, {expiresIn: 1800});
                     
                     res.status(200).json({
                         message: "ok",
@@ -49,14 +49,14 @@ router.post('/login', async (req, res) => {
     };
 });
 
-router.put('/logout', verifyToken, (req, res) => {
+router.post('/logout', verifyToken, (req, res) => {
     const authHeader = req.headers["authorization"];
 
     jwt.sign(authHeader, "", { expiresIn: 1 } , (logout, err) => {
         if (logout) {
-            res.send({msg : 'Logged out'});
+            res.send({message : 'Logged out'});
         } else {
-            res.send({msg:'Error'});
+            res.send({message: 'Error'});
         }
     })
 })
