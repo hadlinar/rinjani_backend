@@ -43,6 +43,29 @@ router.get('/visit', verifyToken, (req, res)=>{
     });  
 });
 
+router.get('/visit/all', verifyToken, (req, res)=>{  
+    jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
+        try {
+            let userId = authData.nik
+            let visit = new Visit().getVisitByIdAll(userId)
+            visit.then(function(result) {
+                res.status(200).json({
+                    "message": "ok",
+                    "result": result
+                })
+            })
+        } catch (e) {
+            res.status(500).json({
+                 message: 'Failed to authenticate token.'
+            });
+
+            res.status(403).json({
+                message: "Session time out",
+            });
+        }
+    });  
+});
+
 router.post('/visit', verifyToken, (req,res) => {
     let body = req.body
 
