@@ -49,12 +49,12 @@ router.post('/login', async (req, res) => {
     };
 });
 
-router.post('/logout', verifyToken, (req, res) => {
+router.post('/logout', (req, res) => {
     const authHeader = req.headers["authorization"];
 
     jwt.sign(authHeader, "", { expiresIn: 1 } , (logout, err) => {
         if (logout) {
-            res.send({message : 'Logged out'});
+            res.send({message : 'Log out'});
         } else {
             res.send({message: 'Error'});
         }
