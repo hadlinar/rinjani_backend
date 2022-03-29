@@ -10,6 +10,7 @@ const roleRoute = require('./routes/role');
 const employeeRoute = require('./routes/employee');
 const customerRoute = require('./routes/customer');
 const branchRoute = require('./routes/branch');
+const logoutRoute = require('./routes/logout');
 
 app.use(compression())
 app.use(express.json());
@@ -38,6 +39,7 @@ app.use(employeeRoute);
 app.use(customerRoute);
 app.use(branchRoute);
 app.use(loginRoute);
+app.use(logoutRoute);
 
 const http = require('http')
 const hostname = '170.1.70.67'
