@@ -24,8 +24,40 @@ class Visit {
         FROM public.trn_visit as v
         LEFT JOIN public.mst_customer as cu
         ON v.cust_id=cu.cust_id AND v.branch_id=cu.branch_id
-        WHERE v.visit_id='02' AND v.user_id=$1 AND v.status_visit='n'
+        WHERE v.user_id=$1 AND v.status_visit='n' AND v.time_finish BETWEEN NOW() - INTERVAL '24 HOURS' AND NOW()
         ORDER BY v.visit_no ASC;`, [userId])
+        .catch(console.log);
+
+        return result.rows;        
+    };
+
+    async getVisitByIdAll(userId){
+        let result = await db.query(`SELECT 
+        v.visit_no, 
+        v.visit_id, 
+       	v.branch_id, 
+        cu.cust_name, 
+        v.cust_id, 
+        v.time_start, 
+        v.time_finish, 
+        v.user_id, 
+        v.description, 
+        v.pic_position, 
+        v.pic_name, 
+        v.status_visit
+        FROM public.trn_visit as v
+        LEFT JOIN public.mst_customer as cu
+        ON v.cust_id=cu.cust_id AND v.branch_id=cu.branch_id
+        WHERE v.user_id=$1
+        ORDER BY v.visit_no ASC;`, [userId])
+        .catch(console.log);
+
+        return result.rows;        
+    };
+
+    async deleteVisit(userId, visitNo){
+        let result = await db.query(`DELETE FROM public.trn_visit
+        WHERE visit_no=$2 and user_id=$1;`, [userId, visitNo])
         .catch(console.log);
 
         return result.rows;        
