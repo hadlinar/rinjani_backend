@@ -55,6 +55,14 @@ class Visit {
         return result.rows;        
     };
 
+    async deleteVisit(userId, visitNo){
+        let result = await db.query(`DELETE FROM public.trn_visit
+        WHERE visit_no=$2 and user_id=$1;`, [userId, visitNo])
+        .catch(console.log);
+
+        return result.rows;        
+    };
+
     async getRealizationById(userId, filtered){
         let result = await db.query(
             `select visit_no, real_no, branch_id, f_branch_name(branch_id) branch, cust_id, f_cust_name(branch_id, cust_id) customer, time_start, time_finish,
