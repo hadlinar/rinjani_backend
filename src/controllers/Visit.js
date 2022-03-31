@@ -68,7 +68,7 @@ class Visit {
             `select visit_no, real_no, branch_id, f_branch_name(branch_id) branch, cust_id, f_cust_name(branch_id, cust_id) customer, time_start, time_finish,
             user_id, f_employee_name(user_id) employee, description, pic_position, pic_name, status_visit, latitude, longitude
             from trn_real_visit
-            where time_finish > now() - $2::interval
+            where (cust_id = '') IS NOT TRUE and time_finish > now() - $2::interval
             and user_id = $1
             order by real_no desc`,
         [userId, filtered])
@@ -82,7 +82,7 @@ class Visit {
             `select visit_no, real_no, branch_id, f_branch_name(branch_id) branch, cust_id, f_cust_name(branch_id, cust_id) customer, time_start, time_finish,
             user_id, f_employee_name(user_id) employee, description, pic_position, pic_name, status_visit, latitude, longitude
             from trn_real_visit
-            where time_finish > now() - $2::interval
+            where (cust_id = '') IS NOT TRUE time_finish > now() - $2::interval
             and branch_id = case when branch_id = '0' then branch_id else $1 end
             order by real_no, branch_id desc`, [branchId, filtered])
         .catch(console.log);
