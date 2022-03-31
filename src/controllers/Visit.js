@@ -24,7 +24,7 @@ class Visit {
         FROM public.trn_visit as v
         LEFT JOIN public.mst_customer as cu
         ON v.cust_id=cu.cust_id AND v.branch_id=cu.branch_id
-        WHERE v.user_id=$1 AND v.status_visit='n' AND v.time_finish BETWEEN NOW() - INTERVAL '24 HOURS' AND NOW()
+        WHERE v.user_id=$1 AND v.status_visit='n' AND v.time_start BETWEEN NOW() - INTERVAL '24 HOURS' AND NOW()
         ORDER BY v.visit_no ASC;`, [userId])
         .catch(console.log);
 
