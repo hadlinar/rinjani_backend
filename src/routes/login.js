@@ -26,7 +26,7 @@ router.post('/login', async (req, res) => {
                 } else if (result === true) { 
                     const token = jwt.sign({
                         nik: nik,
-                    }, process.env.SECRET_KEY, {expiresIn: 1800});
+                    }, process.env.SECRET_KEY);
                     
                     res.status(200).json({
                         message: "ok",
