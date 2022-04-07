@@ -42,7 +42,8 @@ app.use(loginRoute);
 app.use(logoutRoute);
 
 const http = require('http')
-const hostname = '170.1.70.67'
+// const hostname = '170.1.70.67'
+const hostname = '0.0.0.0'
 const port = 4200;
 
 app.use(function(req, res, next) {

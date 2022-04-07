@@ -193,8 +193,6 @@ router.get(`/realization/:filter`, verifyToken, (req,res) => {
             });
         }
     });
-
-
 });
 
 router.get(`/realization_operasional/:branchId/:filter`, async (req,res) => {
@@ -215,6 +213,35 @@ router.get(`/realization_operasional/:branchId/:filter`, async (req,res) => {
         "message": "ok",
         "result": realization
     })
+});
+
+router.get(`/pdf/:startDate/:endDate`, verifyToken, (req,res) => {
+    let startDate = req.params.startDate
+    let endDate = req.params.endDate
+
+    jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
+        try{
+            let userId = authData.nik
+            let realization = new Visit().getPDF(userId, startDate, endDate)
+            realization.then(function(result) {
+                res.status(200).json({
+                    "message": "ok",
+                    "result": result
+                })
+            })
+        } catch(e) {
+
+            res.status(500).json({
+                message: 'Failed to authenticate token.'
+           });
+           
+            res.status(403).json({
+                message: "Session time out",
+            });
+        }
+    });
+
+
 });
 
 function verifyToken(req, res, next) { 
