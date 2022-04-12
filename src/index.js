@@ -42,8 +42,8 @@ app.use(logoutRoute);
 
 const http = require('http')
 
-app.set('host', process.env.HOST || '0.0.0.0')
-app.set('port', process.env.PORT)
+app.set('host', '0.0.0.0')
+app.set('port', '3000')
 
 app.use(function(req, res, next) {
     res.status(404);
