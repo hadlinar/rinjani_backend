@@ -42,14 +42,13 @@ app.use(logoutRoute);
 
 const http = require('http')
 
-app.set('host', process.env.HOST || '0.0.0.0')
-app.set('port', process.env.PORT)
+const port = 4200
 
 app.use(function(req, res, next) {
     res.status(404);
     res.send('404: File Not Found');
 });
 
-http.createServer(app).listen(app.get('port'), app.get('host'), function(){
-    console.log("Server running at port " + app.get('port'));
-});
+http.createServer(app).listen(port, () => {
+    console.log(`Server running at on port ${port}`);
+  });
