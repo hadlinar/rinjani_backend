@@ -3,7 +3,7 @@ const router = express.Router();
 const Visit = require('../controllers/Visit');
 const  jwt  =  require("jsonwebtoken");
 
-router.get('/visits', async (req,res) => {
+router.get('/rinjani/visits', async (req,res) => {
     const Visit = require('../controllers/Visit');
     let visits = await new Visit().getAllVisit();
     return res.status(200).json({
@@ -12,7 +12,7 @@ router.get('/visits', async (req,res) => {
     })
 });
 
-router.get('/visit/category', async (req,res) => {
+router.get('/rinjani/visit/category', async (req,res) => {
     let visits = await new Visit().getVisitCat()
     return res.status(200).json({
         "message": "ok",
@@ -20,7 +20,7 @@ router.get('/visit/category', async (req,res) => {
     })
 });
 
-router.get('/visit', verifyToken, (req, res)=>{  
+router.get('/rinjani/visit', verifyToken, (req, res)=>{  
     jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
         try {
             let userId = authData.nik
@@ -43,7 +43,7 @@ router.get('/visit', verifyToken, (req, res)=>{
     });  
 });
 
-router.get('/visit/all', verifyToken, (req, res)=>{  
+router.get('/rinjani/visit/all', verifyToken, (req, res)=>{  
     jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
         try {
             let userId = authData.nik
@@ -66,7 +66,7 @@ router.get('/visit/all', verifyToken, (req, res)=>{
     });  
 });
 
-router.delete('/visit/:visitNo', verifyToken, (req, res)=>{  
+router.delete('/rinjani/visit/:visitNo', verifyToken, (req, res)=>{  
     let visitNo = req.params.visitNo
     jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
         try {
@@ -89,7 +89,7 @@ router.delete('/visit/:visitNo', verifyToken, (req, res)=>{
     });  
 });
 
-router.post('/visit', verifyToken, (req,res) => {
+router.post('/rinjani/visit', verifyToken, (req,res) => {
     let body = req.body
 
     jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
@@ -123,7 +123,7 @@ router.post('/visit', verifyToken, (req,res) => {
 
 });
 
-router.post('/realization', verifyToken, (req,res) => {
+router.post('/rinjani/realization', verifyToken, (req,res) => {
     let body = req.body
 
     jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
@@ -159,7 +159,7 @@ router.post('/realization', verifyToken, (req,res) => {
 
 });
 
-router.get(`/realization/:filter`, verifyToken, (req,res) => {
+router.get(`/rinjani/realization/:filter`, verifyToken, (req,res) => {
     let filter = req.params.filter
     let filtered
     if(filter == 'week') {
@@ -195,7 +195,7 @@ router.get(`/realization/:filter`, verifyToken, (req,res) => {
     });
 });
 
-router.get(`/realization_operasional/:branchId/:filter`, async (req,res) => {
+router.get(`/rinjani/realization_operasional/:branchId/:filter`, async (req,res) => {
     let branchId = req.params.branchId
     let filter = req.params.filter
     let filtered
@@ -215,7 +215,7 @@ router.get(`/realization_operasional/:branchId/:filter`, async (req,res) => {
     })
 });
 
-router.get(`/pdf/:startDate/:endDate`, verifyToken, (req,res) => {
+router.get(`/rinjani/pdf/:startDate/:endDate`, verifyToken, (req,res) => {
     let startDate = req.params.startDate
     let endDate = req.params.endDate
 

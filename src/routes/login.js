@@ -7,7 +7,7 @@ const db = require('../config/db');
 const  jwt  =  require("jsonwebtoken");
 const Login = require('../controllers/Login');
 
-router.post('/login', async (req, res) => {
+router.post('/rinjani/login', async (req, res) => {
     const { nik, password } = req.body;
     try {
         const data = await new Login().login(nik)
@@ -49,19 +49,7 @@ router.post('/login', async (req, res) => {
     };
 });
 
-// router.post('/logout', (req, res) => {
-//     const authHeader = req.headers["authorization"];
-
-//     jwt.sign(authHeader, "", { expiresIn: 1 } , (logout, err) => {
-//         if (logout) {
-//             res.send({message : 'Logged out'});
-//         } else {
-//             res.send({message: 'Error'});
-//         }
-//     })
-// })
-
-router.post('/register', async (req, res) => {
+router.post('/rinjani/register', async (req, res) => {
     const { user_id, nik, branch_id, password, email, role_id, flg_used } =  req.body;
     try {
         const data  =  await db.query(`SELECT * FROM public.mst_user WHERE email= $1;`, [email]);
@@ -118,19 +106,5 @@ router.post('/register', async (req, res) => {
         });
     };
 });
-
-// function verifyToken(req, res, next) { 
-//     const bearerHearder = req.headers['authorization'];
-//     if(typeof bearerHearder != 'undefined'){
-//         const bearer = bearerHearder.split(' ');
-//         const bearerToken = bearer[1];
-//         req.token = bearerToken;
-//         next();  
-  
-//     } else {  
-//         res.sendStatus(403);  
-//     }  
-// } 
-
 
 module.exports = router;

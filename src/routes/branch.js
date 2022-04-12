@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Branch = require('../controllers/Branch');
 
-router.get('/branch', async (req,res) => {
+router.get('/rinjani/branch', async (req,res) => {
     let branch = await new Branch().getBranch();
     return res.status(200).json({
         "message": "ok",
@@ -10,7 +10,7 @@ router.get('/branch', async (req,res) => {
     })
 });
 
-router.get('/branch_operasional', async (req,res) => {
+router.get('/rinjani/branch_operasional', async (req,res) => {
     let branch = await new Branch().getBranchOp();
     return res.status(200).json({
         "message": "ok",

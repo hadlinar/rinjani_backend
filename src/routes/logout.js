@@ -4,7 +4,7 @@ require("dotenv").config();
 const router = express.Router();
 const  jwt  =  require("jsonwebtoken");
 
-router.post('/logout', verifyToken, (req, res) => {
+router.post('/rinjani/logout', verifyToken, (req, res) => {
     const authHeader = req.headers["authorization"];
 
     jwt.sign(authHeader, "", { expiresIn: 1 } , (logout, err) => {

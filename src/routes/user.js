@@ -4,7 +4,7 @@ const router = express.Router();
 const User = require('../controllers/User');
 const  jwt  =  require("jsonwebtoken");
 
-router.get('/users', async (req,res) => {
+router.get('/rinjani/users', async (req,res) => {
     let users = await new User().getAllUser();
     return res.status(200).json({
         "message": "ok",
@@ -12,7 +12,7 @@ router.get('/users', async (req,res) => {
     })
 });
 
-router.post('/user', verifyToken, (req, res) => {   
+router.post('/rinjani/user', verifyToken, (req, res) => {   
     jwt.verify(req.token, process.env.SECRET_KEY, (err, decoded) => {
         if (err) return res.status(500).json({ 
             message: 'Failed to authenticate token.' 

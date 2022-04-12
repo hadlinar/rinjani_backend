@@ -18,7 +18,6 @@ app.use(cors());
 app.use(express.urlencoded({
     extended:true
 }));
-app.set('strict routing', false );
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*")
     res.header(
@@ -42,15 +41,15 @@ app.use(loginRoute);
 app.use(logoutRoute);
 
 const http = require('http')
-const hostname = '170.1.70.67'
-// const hostname = '0.0.0.0'
-const port = 4200;
+
+app.set('host', process.env.HOST || '0.0.0.0')
+app.set('port', process.env.PORT)
 
 app.use(function(req, res, next) {
     res.status(404);
     res.send('404: File Not Found');
 });
 
-http.createServer(app).listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`)
+http.createServer(app).listen(app.get('port'), app.get('host'), function(){
+    console.log("Server running at port " + app.get('port'));
 });
