@@ -141,7 +141,8 @@ router.post('/rinjani/realization', verifyToken, (req,res) => {
                 body.pic_name,
                 body.status_visit,
                 body.latitude,
-                body.longitude
+                body.longitude,
+                body.description_real
             );
             res.status(200).json({
                 "message": "posted"

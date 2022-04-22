@@ -24,7 +24,7 @@ class Visit {
         FROM public.trn_visit as v
         LEFT JOIN public.mst_customer as cu
         ON v.cust_id=cu.cust_id AND v.branch_id=cu.branch_id
-        WHERE v.user_id=$1 AND v.status_visit='n' AND v.time_start BETWEEN NOW() - INTERVAL '24 HOURS' AND NOW()
+        WHERE v.user_id=$1 AND v.status_visit='n' AND v.time_start > TIMESTAMP 'today'
         ORDER BY v.visit_no ASC;`, [userId])
         .catch(console.log);
 
@@ -137,7 +137,8 @@ class Visit {
         picName, 
         statusVisit,
         lat,
-        lng){
+        lng,
+        descReal){
         await db.query(`
             WITH updated AS (
                 UPDATE public.trn_visit
@@ -158,8 +159,9 @@ class Visit {
                 pic_name, 
                 status_visit, 
                 latitude, 
-                longitude)
-            VALUES ('', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);          
+                longitude,
+                description_real)
+            VALUES ('', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13);          
         `,[
                 visitNo, 
                 branchId, 
@@ -172,7 +174,8 @@ class Visit {
                 picName, 
                 statusVisit,
                 lat,
-                lng])
+                lng,
+                descReal])
         .catch(console.log);
 
         return;        

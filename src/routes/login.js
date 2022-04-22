@@ -35,7 +35,7 @@ router.post('/rinjani/login', async (req, res) => {
                 }
                 else {
                     if (result != true)
-                    res.status(400).json({
+                    res.status(401).json({
                         error: "Enter correct password",
                     });
                 }
@@ -75,12 +75,12 @@ router.post('/rinjani/register', async (req, res) => {
                     flg_used
                 };
                 var  flag  =  1; 
-                
+
                 db.query(`INSERT INTO public.mst_user(
                     user_id, nik, branch_id, password, email, role_id, flg_used) VALUES ($1,$2,$3,$4,$5,$6,$7);`, 
                     [user.user_id, user.nik, user.branch_id, user.password, user.email, user.role_id, user.flg_used], (err) => {
                         if (err) {
-                            flag  =  0; //not inserted
+                            flag  =  0;
                             console.error(err);
                             return  res.status(500).json({
                                 error: "Database error"
@@ -92,8 +92,8 @@ router.post('/rinjani/register', async (req, res) => {
                         }
                 })
                 if (flag) {
-                    const  token  = jwt.sign( //jwt
-                        {nik: user.nik, token: token},process.env.SECRET_KEY
+                    const token  = jwt.sign(
+                        {nik: user.nik}, process.env.SECRET_KEY
                     );
                 };
             });
