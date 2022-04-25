@@ -23,9 +23,7 @@ router.post('/rinjani/add_customer', (req,res) => {
     let body = req.body
     let newCust = new Customer().addNewCustomer(
         body.branch_id,
-        body.cust_name,
-        body.address,
-        body.city
+        body.cust_name
     );
     newCust.then(function(result) {
         res.status(200).json({
