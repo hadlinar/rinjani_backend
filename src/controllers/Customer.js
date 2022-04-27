@@ -16,24 +16,22 @@ class Customer {
     async addNewCustomer(
         branchId,
         custName,
-        address,
-        city
     ) {
         await db.query(`
         INSERT INTO public.mst_customer(
             branch_id,
-            cust_name,
-            address,
-            city
-        ) VALUES ($1, $2, $3, $4)`, [
+            cust_name
+        ) VALUES ($1, $2)`, [
             branchId,
-            custName,
-            address,
-            city
+            custName
         ])
         .catch(console.log);
 
-        return;   
+        let results = await db.query(`
+            SELECT cust_id FROM public.mst_customer WHERE cust_name=$1
+        `, [custName]).catch(console.log);
+
+        return results.rows[0];   
     }
 };
 
