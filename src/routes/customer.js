@@ -26,7 +26,7 @@ router.post('/rinjani/add_customer', verifyToken, async (req,res) => {
     let body = req.body
     try {
         const data = await db.query(`SELECT * FROM public.mst_customer WHERE branch_id=$1 AND cust_name=$2`, [body.branch_id, body.cust_name]);
-        // console.log(data.rows[0]['cust_id']);
+        
         const arr  =  data.rows;
         if (arr.length  !=  0) {
             return  res.status(400).json({
@@ -38,11 +38,6 @@ router.post('/rinjani/add_customer', verifyToken, async (req,res) => {
                 body.branch_id,
                 body.cust_name
             );
-            // console.log(newCust['cust_id'])
-            // return res.status(200).json({
-            //     "message": "ok",
-            //     "result": newCust.rows
-            // })
             jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
                 try {
                     let userId = authData.nik

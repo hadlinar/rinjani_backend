@@ -66,7 +66,7 @@ class Visit {
     async getRealizationById(userId, filtered){
         let result = await db.query(
             `select visit_no, real_no, branch_id, f_branch_name(branch_id) branch, cust_id, f_cust_name(branch_id, cust_id) customer, time_start, time_finish,
-            user_id, f_employee_name(user_id) employee, description, pic_position, pic_name, status_visit, latitude, longitude
+            user_id, f_employee_name(user_id) employee, description, pic_position, pic_name, status_visit, latitude, longitude, description_real
             from trn_real_visit
             where (cust_id = '') IS NOT TRUE and time_finish > now() - $2::interval
             and user_id = $1
@@ -80,7 +80,7 @@ class Visit {
     async getRealizationOp(branchId, filtered){
         let result = await db.query(
             `select visit_no, real_no, branch_id, f_branch_name(branch_id) branch, cust_id, f_cust_name(branch_id, cust_id) customer, time_start, time_finish,
-            user_id, f_employee_name(user_id) employee, description, pic_position, pic_name, status_visit, latitude, longitude
+            user_id, f_employee_name(user_id) employee, description, pic_position, pic_name, status_visit, latitude, longitude, description_real
             from trn_real_visit
             where (cust_id = '') IS NOT TRUE AND time_finish > now() - $2::interval
             and branch_id = case when branch_id = '0' then branch_id else $1 end
@@ -184,7 +184,7 @@ class Visit {
     async getPDF(userId, startDate, endDate){
         let result = await db.query(
             `select real_no, visit_no, branch_id, f_branch_name(branch_id) branch, cust_id, f_cust_name(branch_id, cust_id) customer, f_user_email(user_id) email, time_start, time_finish,
-            user_id, f_employee_name(user_id) employee, description, pic_position, pic_name
+            user_id, f_employee_name(user_id) employee, description_real, pic_position, pic_name
             from trn_real_visit
             where DATE_TRUNC ('day', time_finish) BETWEEN $2 AND $3
             and user_id=$1
