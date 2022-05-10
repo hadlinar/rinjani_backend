@@ -20,8 +20,10 @@ router.get('/rinjani/visit/category', async (req,res) => {
     })
 });
 
-router.get('/rinjani/visit/bar', async (req,res) => {
-    let customer = await new Visit().getCustomerBar();
+router.get('/rinjani/visit/bar/:branchId', async (req,res) => {
+    let branchId = req.params.branchId
+
+    let customer = await new Visit().getCustomerBar(branchId);
     return res.status(200).json({
         "message": "ok",
         "result": customer

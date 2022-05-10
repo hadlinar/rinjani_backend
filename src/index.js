@@ -43,21 +43,17 @@ app.use(logoutRoute);
 const http = require('http')
 
 const port = 3001
-// const hostname = '127.0.0.1'
-
-// app.use(function(req, res, next) {
-//     res.status(404);
-//     res.send('404: File Not Found');
-// });
-
-// http.createServer(app).listen(port, hostname, () => {
-//     console.log(`Server running at on port ${hostname}:${port}`);
-//   });
 
 app.use(function(req, res, next) {
     res.status(404);
     res.send('404: File Not Found');
 });
+
+// const hostname = '127.0.0.1'
+
+// http.createServer(app).listen(port, hostname, () => {
+//     console.log(`Server running at on port ${hostname}:${port}`);
+//   });
 
 http.createServer(app).listen(port, () => {
     console.log(`Server running at on port ${port}`);
