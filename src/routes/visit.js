@@ -20,6 +20,14 @@ router.get('/rinjani/visit/category', async (req,res) => {
     })
 });
 
+router.get('/rinjani/visit/bar', async (req,res) => {
+    let customer = await new Visit().getCustomerBar();
+    return res.status(200).json({
+        "message": "ok",
+        "result": customer
+    })
+});
+
 router.get('/rinjani/visit', verifyToken, (req, res)=>{  
     jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
         try {
@@ -141,7 +149,8 @@ router.post('/rinjani/realization', verifyToken, (req,res) => {
                 body.pic_name,
                 body.status_visit,
                 body.latitude,
-                body.longitude
+                body.longitude,
+                body.description_real
             );
             res.status(200).json({
                 "message": "posted"
