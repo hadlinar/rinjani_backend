@@ -20,6 +20,14 @@ router.get('/rinjani/visit/category', async (req,res) => {
     })
 });
 
+router.get('/rinjani/visit/bar', async (req,res) => {
+    let customer = await new Visit().getCustomerBar();
+    return res.status(200).json({
+        "message": "ok",
+        "result": customer
+    })
+});
+
 router.get('/rinjani/visit', verifyToken, (req, res)=>{  
     jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
         try {

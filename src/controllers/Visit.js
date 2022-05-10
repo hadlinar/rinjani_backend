@@ -181,6 +181,16 @@ class Visit {
         return;        
     };
 
+    async getCustomerBar(){
+        let results = await db.query(`select b.category_id, f_cust_cat(b.category_id) category, coalesce(count(a.visit_id::numeric),0) amount
+        from trn_visit a, mst_customer b
+        where a.cust_id = b.cust_id
+        and a.branch_id = b.branch_id
+        group by b.category_id
+        order by b.category_id`).catch(console.log);
+        return results.rows;
+    };
+
     async getPDF(userId, startDate, endDate){
         let result = await db.query(
             `select real_no, visit_no, branch_id, f_branch_name(branch_id) branch, cust_id, f_cust_name(branch_id, cust_id) customer, f_user_email(user_id) email, time_start, time_finish,
