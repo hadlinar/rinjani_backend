@@ -22,6 +22,14 @@ router.get('/rinjani/customers/category', async (req,res) => {
     })
 });
 
+router.get('/rinjani/customers/bar', async (req,res) => {
+    let customer = await new Customer().getCustomerBar();
+    return res.status(200).json({
+        "message": "ok",
+        "result": customer
+    })
+});
+
 router.post('/rinjani/add_customer', verifyToken, async (req,res) => {
     let body = req.body
     try {
