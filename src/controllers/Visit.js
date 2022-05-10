@@ -181,13 +181,15 @@ class Visit {
         return;        
     };
 
-    async getCustomerBar(){
-        let results = await db.query(`select b.category_id, f_cust_cat(b.category_id) category, coalesce(count(a.visit_id::numeric),0) amount
+    async getCustomerBar(branchId){            
+        let results = await db.query(`
+        select b.category_id, f_cust_cat(b.category_id) category, coalesce(count(a.visit_id::numeric),0) amount
         from trn_visit a, mst_customer b
         where a.cust_id = b.cust_id
         and a.branch_id = b.branch_id
+        and a.branch_id = case when a.branch_id = '0' then a.branch_id else $1 end
         group by b.category_id
-        order by b.category_id`).catch(console.log);
+        order by b.category_id`, [branchId]).catch(console.log);
         return results.rows;
     };
 
