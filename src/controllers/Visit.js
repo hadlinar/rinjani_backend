@@ -90,6 +90,52 @@ class Visit {
         return result.rows;        
     };
 
+    async getActivity(branchId){
+        let result = await db.query(
+            `select sum(a.in_office) in_office, sum(a.out_office) out_office, sum(a.off_act) off_act, sum(a.all_act) all_act,
+            round(sum(a.in_office)/sum(a.all_act)*100,0) prs_in, round(sum(a.out_office)/sum(a.all_act)*100,0) prs_out, round(sum(a.off_act)/sum(a.all_act)*100,0) prs_off
+            from (select branch_id, visit_id, case when visit_id = '01' then count(visit_no) else 0 end in_office, case when visit_id = '02' then count(visit_no) else 0 end out_office,
+            case when visit_id = '03' then count(visit_no) else 0 end off_act, case when visit_id in ('01','02','03') then count(visit_no) else 0 end all_act
+            from trn_visit
+            group by branch_id, visit_id) a
+            where a.branch_id =	case when $1 = '0' then a.branch_id else $1 end`, [branchId])
+        .catch(console.log);
+
+        return result.rows;        
+    };
+
+    async getRanking(typeRank){
+        if(typeRank == 'DESC') {
+            let result = await db.query(
+                `select a.user_id, f_employee_name(a.user_id) name_user,a.branch_id, f_branch_name(a.branch_id) branch_name, sum(a.in_office) in_office, sum(a.out_office) out_office, sum(a.off_act) off_act, sum(a.all_act) all_act
+                from(select user_id,branch_id, case when visit_id = '01' then count(visit_no) else 0 end in_office, case when visit_id = '02' then count(visit_no) else 0 end out_office,
+                case when visit_id = '03' then count(visit_no) else 0 end off_act, case when visit_id in ('01','02','03') then count(visit_no) else 0 end all_act
+                from trn_visit
+                group by user_id,branch_id, visit_id) a
+                group by a.user_id, a.branch_id
+                order by all_act DESC
+                limit 5`)
+            .catch(console.log);
+
+            return result.rows;      
+        } else if (typeRank == 'ASC') {
+            let result = await db.query(
+                `select a.user_id, f_employee_name(a.user_id) name_user,a.branch_id, f_branch_name(a.branch_id) branch_name, sum(a.in_office) in_office, sum(a.out_office) out_office, sum(a.off_act) off_act, sum(a.all_act) all_act
+                from(select user_id,branch_id, case when visit_id = '01' then count(visit_no) else 0 end in_office, case when visit_id = '02' then count(visit_no) else 0 end out_office,
+                case when visit_id = '03' then count(visit_no) else 0 end off_act, case when visit_id in ('01','02','03') then count(visit_no) else 0 end all_act
+                from trn_visit
+                group by user_id,branch_id, visit_id) a
+                group by a.user_id, a.branch_id
+                order by all_act ASC
+                limit 5`)
+            .catch(console.log);
+
+            return result.rows;
+        }
+    };
+
+
+
     async getVisitCat(){
         let results = await db.query(`SELECT * FROM public.mst_visit_cat ORDER BY visit_id ASC `).catch(console.log);
         return results.rows;
