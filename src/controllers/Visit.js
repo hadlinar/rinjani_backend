@@ -104,6 +104,36 @@ class Visit {
         return result.rows;        
     };
 
+    async getRanking(typeRank){
+        if(typeRank == 'DESC') {
+            let result = await db.query(
+                `select a.user_id, f_employee_name(a.user_id) name_user,a.branch_id, f_branch_name(a.branch_id) branch_name, sum(a.in_office) in_office, sum(a.out_office) out_office, sum(a.off_act) off_act, sum(a.all_act) all_act
+                from(select user_id,branch_id, case when visit_id = '01' then count(visit_no) else 0 end in_office, case when visit_id = '02' then count(visit_no) else 0 end out_office,
+                case when visit_id = '03' then count(visit_no) else 0 end off_act, case when visit_id in ('01','02','03') then count(visit_no) else 0 end all_act
+                from trn_visit
+                group by user_id,branch_id, visit_id) a
+                group by a.user_id, a.branch_id
+                order by all_act DESC
+                limit 5`)
+            .catch(console.log);
+
+            return result.rows;      
+        } else if (typeRank == 'ASC') {
+            let result = await db.query(
+                `select a.user_id, f_employee_name(a.user_id) name_user,a.branch_id, f_branch_name(a.branch_id) branch_name, sum(a.in_office) in_office, sum(a.out_office) out_office, sum(a.off_act) off_act, sum(a.all_act) all_act
+                from(select user_id,branch_id, case when visit_id = '01' then count(visit_no) else 0 end in_office, case when visit_id = '02' then count(visit_no) else 0 end out_office,
+                case when visit_id = '03' then count(visit_no) else 0 end off_act, case when visit_id in ('01','02','03') then count(visit_no) else 0 end all_act
+                from trn_visit
+                group by user_id,branch_id, visit_id) a
+                group by a.user_id, a.branch_id
+                order by all_act ASC
+                limit 5`)
+            .catch(console.log);
+
+            return result.rows;
+        }
+    };
+
 
 
     async getVisitCat(){

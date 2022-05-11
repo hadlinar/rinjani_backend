@@ -235,6 +235,21 @@ router.get(`/rinjani/activity/:branchId`, async (req,res) => {
     })
 });
 
+router.get(`/rinjani/ranking/:type`, async (req,res) => {
+    let type = req.params.type
+    let typeRank
+    if(type == 'highest') {
+        typeRank = 'DESC'
+    } if(type == 'lowest') {
+        typeRank = 'ASC'
+    }
+
+    let realization = await new Visit().getRanking(typeRank)
+    return res.status(200).json({
+        "message": "ok",
+        "result": realization
+    })
+});
 
 router.get(`/rinjani/pdf/:startDate/:endDate`, verifyToken, (req,res) => {
     let startDate = req.params.startDate
