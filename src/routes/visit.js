@@ -226,6 +226,16 @@ router.get(`/rinjani/realization_operasional/:branchId/:filter`, async (req,res)
     })
 });
 
+router.get(`/rinjani/activity/:branchId`, async (req,res) => {
+    let branchId = req.params.branchId
+    let realization = await new Visit().getActivity(branchId)
+    return res.status(200).json({
+        "message": "ok",
+        "result": realization
+    })
+});
+
+
 router.get(`/rinjani/pdf/:startDate/:endDate`, verifyToken, (req,res) => {
     let startDate = req.params.startDate
     let endDate = req.params.endDate
