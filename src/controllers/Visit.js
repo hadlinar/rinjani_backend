@@ -104,40 +104,39 @@ class Visit {
         return result.rows;        
     };
 
-    async getRanking(typeRank){
-        if(typeRank == 'DESC') {
-            let result = await db.query(
-                `select a.user_id, f_employee_name(a.user_id) name_user,a.branch_id, f_branch_name(a.branch_id) branch_name, sum(a.in_office) in_office, sum(a.out_office) out_office, sum(a.off_act) off_act, sum(a.all_act) all_act
-                from(select user_id,branch_id, case when visit_id = '01' then count(visit_no) else 0 end in_office, case when visit_id = '02' then count(visit_no) else 0 end out_office,
-                case when visit_id = '03' then count(visit_no) else 0 end off_act, case when visit_id in ('01','02','03') then count(visit_no) else 0 end all_act
-                from trn_visit
-                group by user_id,branch_id, visit_id) a
-                group by a.user_id, a.branch_id
-                order by all_act DESC
-                limit 5`)
-            .catch(console.log);
-
-            return result.rows;      
-        } else if (typeRank == 'ASC') {
-            let result = await db.query(
-                `select a.user_id, f_employee_name(a.user_id) name_user,a.branch_id, f_branch_name(a.branch_id) branch_name, sum(a.in_office) in_office, sum(a.out_office) out_office, sum(a.off_act) off_act, sum(a.all_act) all_act
-                from(select user_id,branch_id, case when visit_id = '01' then count(visit_no) else 0 end in_office, case when visit_id = '02' then count(visit_no) else 0 end out_office,
-                case when visit_id = '03' then count(visit_no) else 0 end off_act, case when visit_id in ('01','02','03') then count(visit_no) else 0 end all_act
-                from trn_visit
-                group by user_id,branch_id, visit_id) a
-                group by a.user_id, a.branch_id
-                order by all_act ASC
-                limit 5`)
-            .catch(console.log);
-
-            return result.rows;
-        }
+    async getRanking(){
+        let results = await db.query(`select c.branch_id, f_branch_name(c.branch_id) branch_name, c.nik, f_employee_name(c.nik) name_emp, 
+        sum(c.in_office) in_office, sum(c.out_office) out_office, sum(c.off_act) off_act, sum(c.all_act) all_act
+        from
+        (select distinct a.branch_id, f_branch_name(a.branch_id) branch_name, a.nik, f_employee_name(a.nik) name_emp, case when visit_id = '01' then count(b.visit_no) else 0 end in_office,
+        case when visit_id = '02' then count(b.visit_no) else 0 end out_office, case when visit_id = '03' then count(b.visit_no) else 0 end off_act,
+        case when visit_id in ('01','02','03') then count(b.visit_no) else 0 end all_act
+        from mst_employee a
+        left join trn_visit b on a.nik = b.user_id and a.branch_id = b.branch_id
+        where a.nik not in ('1984409004','2002413005', '2002413005a','2007207023','2020101027')
+        group by a.nik, a.branch_id, b.visit_id
+        order by a.branch_id) c
+        group by c.nik, c.branch_id
+        order by branch_id asc`).catch(console.log);
+        return results.rows;
     };
 
 
 
-    async getVisitCat(){
-        let results = await db.query(`SELECT * FROM public.mst_visit_cat ORDER BY visit_id ASC `).catch(console.log);
+    async getMonitor(){
+        let results = await db.query(`select c.branch_id, f_branch_name(c.branch_id) branch_name, 
+        sum(c.in_office) in_office, sum(c.out_office) out_office, sum(c.off_act) off_act, sum(c.all_act) all_act
+        from
+        (select distinct a.branch_id, f_branch_name(a.branch_id) branch_name, case when b.visit_id = '01' then count(b.visit_no) else 0 end in_office,
+        case when b.visit_id = '02' then count(b.visit_no) else 0 end out_office, case when b.visit_id = '03' then count(b.visit_no) else 0 end off_act,
+        case when b.visit_id in ('01','02','03') then count(b.visit_no) else 0 end all_act
+        from mst_branch a
+        left join trn_visit b on a.branch_id = b.branch_id
+        and to_char(b.time_start,'ddmmyyyy') = to_char(now(),'ddmmyyyy')
+        group by a.branch_id, b.visit_id
+        order by a.branch_id) c
+        group by c.branch_id
+        order by c.branch_id asc`).catch(console.log);
         return results.rows;
     };
 
