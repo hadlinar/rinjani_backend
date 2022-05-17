@@ -31,6 +31,11 @@ class Visit {
         return result.rows;        
     };
 
+    async getVisitCat() {
+        let results = await db.query(`SELECT * from public.mst_visit_cat ORDER BY visit_id ASC`).catch(console.log);
+        return results.rows;
+    }
+
     async getVisitByIdAll(userId){
         let result = await db.query(`SELECT 
         v.visit_no, 
