@@ -36,7 +36,8 @@ router.post('/rinjani/add_customer', verifyToken, async (req,res) => {
         else {
             let newCust = await new Customer().addNewCustomer(
                 body.branch_id,
-                body.cust_name
+                body.cust_name,
+                body.cat_id
             );
             jwt.verify(req.token, process.env.SECRET_KEY,(err,authData)=>{
                 try {

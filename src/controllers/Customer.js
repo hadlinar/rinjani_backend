@@ -16,14 +16,17 @@ class Customer {
     async addNewCustomer(
         branchId,
         custName,
+        categoryId
     ) {
         await db.query(`
         INSERT INTO public.mst_customer(
             branch_id,
-            cust_name
-        ) VALUES ($1, $2)`, [
+            cust_name,
+            category_id
+        ) VALUES ($1, $2, $3)`, [
             branchId,
-            custName
+            custName,
+            categoryId
         ])
         .catch(console.log);
 
