@@ -118,7 +118,7 @@ class Visit {
         case when visit_id in ('01','02','03') then count(b.visit_no) else 0 end all_act
         from mst_employee a
         left join trn_visit b on a.nik = b.user_id and a.branch_id = b.branch_id
-        where a.nik not in ('1984409004','2002413005', '2002413005a','2007207023','2020101027')
+        where a.nik not in ('1984409004','2002413005','2015101016','2007207023','2020101027')
         group by a.nik, a.branch_id, b.visit_id
         order by a.branch_id) c
         group by c.nik, c.branch_id
