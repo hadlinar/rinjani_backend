@@ -83,13 +83,21 @@ class Visit {
     };
 
     async getRealizationOp(branchId, filtered){
+        // let result = await db.query(
+        //     `select visit_no, real_no, branch_id, f_branch_name(branch_id) branch, cust_id, f_cust_name(branch_id, cust_id) customer, time_start, time_finish,
+        //     user_id, f_employee_name(user_id) employee, description, pic_position, pic_name, status_visit, latitude, longitude, description_real
+        //     from trn_real_visit
+        //     where (cust_id = '') IS NOT TRUE AND time_finish > now() - $2::interval
+        //     and branch_id = case when branch_id = '0' then branch_id else $1 end
+        //     order by real_no, branch_id desc`, [branchId, filtered])
         let result = await db.query(
             `select visit_no, real_no, branch_id, f_branch_name(branch_id) branch, cust_id, f_cust_name(branch_id, cust_id) customer, time_start, time_finish,
             user_id, f_employee_name(user_id) employee, description, pic_position, pic_name, status_visit, latitude, longitude, description_real
             from trn_real_visit
-            where (cust_id = '') IS NOT TRUE AND time_finish > now() - $2::interval
-            and branch_id = case when branch_id = '0' then branch_id else $1 end
-            order by real_no, branch_id desc`, [branchId, filtered])
+            where (cust_id = '') IS NOT TRUE and time_finish > now() - $2::interval
+            and user_id = $1
+            order by real_no desc`,
+        [branchId, filtered])
         .catch(console.log);
 
         return result.rows;        
@@ -110,10 +118,10 @@ class Visit {
     };
 
     async getRanking(){
-        let results = await db.query(`select c.branch_id, f_branch_name(c.branch_id) branch_name, c.nik, f_employee_name(c.nik) name_emp, 
+        let results = await db.query(`select c.branch_id, f_branch_name(c.branch_id) branch_name, c.position, c.nik, f_employee_name(c.nik) name_emp, 
         sum(c.in_office) in_office, sum(c.out_office) out_office, sum(c.off_act) off_act, sum(c.all_act) all_act
         from
-        (select distinct a.branch_id, f_branch_name(a.branch_id) branch_name, a.nik, f_employee_name(a.nik) name_emp, case when visit_id = '01' then count(b.visit_no) else 0 end in_office,
+        (select distinct a.branch_id, f_branch_name(a.branch_id) branch_name, a.nik, a.position, f_employee_name(a.nik) name_emp, case when visit_id = '01' then count(b.visit_no) else 0 end in_office,
         case when visit_id = '02' then count(b.visit_no) else 0 end out_office, case when visit_id = '03' then count(b.visit_no) else 0 end off_act,
         case when visit_id in ('01','02','03') then count(b.visit_no) else 0 end all_act
         from mst_employee a
@@ -121,7 +129,7 @@ class Visit {
         where a.nik not in ('1984409004','2002413005','2015101016','2007207023','2020101027')
         group by a.nik, a.branch_id, b.visit_id
         order by a.branch_id) c
-        group by c.nik, c.branch_id
+        group by c.nik, c.branch_id, c.position
         order by branch_id asc`).catch(console.log);
         return results.rows;
     };

@@ -206,8 +206,8 @@ router.get(`/rinjani/realization/:filter`, verifyToken, (req,res) => {
     });
 });
 
-router.get(`/rinjani/realization_operasional/:branchId/:filter`, async (req,res) => {
-    let branchId = req.params.branchId
+router.get(`/rinjani/realization_operasional/:userId/:filter`, async (req,res) => {
+    let userId = req.params.userId
     let filter = req.params.filter
     let filtered
     if(filter == 'week') {
@@ -219,7 +219,7 @@ router.get(`/rinjani/realization_operasional/:branchId/:filter`, async (req,res)
     } else {
         filtered = '1 year'
     }
-    let realization = await new Visit().getRealizationOp(branchId, filtered)
+    let realization = await new Visit().getRealizationOp(userId, filtered)
     return res.status(200).json({
         "message": "ok",
         "result": realization
