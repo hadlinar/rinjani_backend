@@ -10,4 +10,13 @@ router.get('/rinjani/employee', async (req,res) => {
     })
 });
 
+router.get('/rinjani/employee/:branchId', async (req,res) => {
+    let branchId = req.params.branchId
+    let employee = await new Employee().getEmployeeById(branchId);
+    return res.status(200).json({
+        "message": "ok",
+        "result": employee
+    })
+});
+
 module.exports = router;
