@@ -49,7 +49,7 @@ app.use(function(req, res, next) {
     res.send('404: File Not Found');
 });
 
-// const hostname = '127.0.0.1'
+const hostname = '127.0.0.1'
 
 // http.createServer(app).listen(port, hostname, () => {
 //     console.log(`Server running at on port ${hostname}:${port}`);
